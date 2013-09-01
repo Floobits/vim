@@ -379,6 +379,7 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
     int		tb_change_cnt;
 {
     int		len;
+    int 	retval = FAIL;
 
 #ifdef FEAT_NETBEANS_INTG
     /* Process the queued netbeans messages. */
@@ -393,7 +394,10 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
     if (wtime >= 0)
     {
 	while (WaitForChar(wtime) == 0)		/* no character available */
-	{
+	{	
+		#ifdef FEAT_ASYNC
+		call_timeouts();
+		#endif
 	    if (!do_resize)	/* return if not interrupted by resize */
 		return 0;
 	    handle_resize();
@@ -410,7 +414,22 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
 	 * flush all the swap files to disk.
 	 * Also done when interrupted by SIGWINCH.
 	 */
-	if (WaitForChar(p_ut) == 0)
+
+#ifdef FEAT_ASYNC
+	int t = 0;
+	while (t < p_ut) {
+		retval = WaitForChar(p_tt);
+		call_timeouts();
+		t += p_tt;
+		if (retval == OK) {
+			break;
+		}
+	}
+#else
+	retval = WaitForChar(p_ut);
+#endif
+
+	if (retval == FAIL)
 	{
 #ifdef FEAT_AUTOCMD
 	    if (trigger_cursorhold() && maxlen >= 3
@@ -440,12 +459,29 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
 	 * We want to be interrupted by the winch signal
 	 * or by an event on the monitored file descriptors.
 	 */
+
+	
+	#ifdef FEAT_ASYNC
+	while (TRUE) {
+		retval = WaitForChar(p_tt);
+		call_timeouts();
+		if (retval == OK) {
+			break;
+		}
+	    if (do_resize) {
+    	    /* interrupted by SIGWINCH signal */
+    		handle_resize();
+    	    return 0;
+	    }
+	}
+	#else
 	if (WaitForChar(-1L) == 0)
 	{
 	    if (do_resize)	    /* interrupted by SIGWINCH signal */
 		handle_resize();
 	    return 0;
 	}
+	#endif
 #endif
 
 	/* If input was put directly in typeahead buffer bail out here. */

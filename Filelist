@@ -7,6 +7,8 @@ SRC_ALL =	\
 		src/arabic.c \
 		src/arabic.h \
 		src/ascii.h \
+		src/async.c \
+		src/async.h \
 		src/blowfish.c \
 		src/buffer.c \
 		src/charset.c \

@@ -467,6 +467,13 @@
 #endif
 
 /*
+ * +async		settimeout and setinterval functions.
+ */
+#if defined(FEAT_NORMAL)
+# define FEAT_ASYNC
+#endif
+
+/*
  * +diff		Displaying diffs in a nice way.
  *			Requires +windows and +autocmd.
  */

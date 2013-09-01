@@ -1424,6 +1424,7 @@ DEST_MAN_RU_U = $(DEST_MAN_TOP)/ru.UTF-8$(MAN1DIR)
 TAGS_INCL = *.h
 
 BASIC_SRC = \
+	async.c \
 	blowfish.c \
 	buffer.c \
 	charset.c \
@@ -1513,6 +1514,7 @@ LINT_SRC = $(BASIC_SRC) $(GUI_SRC) $(HANGULIN_SRC) $(PYTHON_SRC) $(PYTHON3_SRC) 
 #LINT_SRC = $(BASIC_SRC)
 
 OBJ_COMMON = \
+	objects/async.o \
 	objects/buffer.o \
 	objects/blowfish.o \
 	objects/charset.o \
@@ -2483,6 +2485,9 @@ auto/pathdef.c: Makefile auto/config.mk
 
 objects:
 	mkdir objects
+
+objects/async.o: async.c
+	$(CCC) -o $@ async.c
 
 objects/blowfish.o: blowfish.c
 	$(CCC) -o $@ blowfish.c
