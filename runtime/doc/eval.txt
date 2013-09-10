@@ -1926,6 +1926,7 @@ server2client( {clientid}, {string})
 serverlist()			String	get a list of available servers
 setbufvar( {expr}, {varname}, {val})	set {varname} in buffer {expr} to {val}
 setcmdpos( {pos})		Number	set cursor position in command-line
+setinterval( {nr},{string})   Number  evaluate the expression {string} every {nr} milliseconds
 setline( {lnum}, {line})	Number	set line {lnum} to {line}
 setloclist( {nr}, {list}[, {action}])
 				Number	modify location list using {list}
@@ -5186,6 +5187,21 @@ setcmdpos({pos})					*setcmdpos()*
 		line.  A number smaller than one has undefined results.
 		Returns 0 when successful, 1 when not editing the command
 		line.
+
+setinterval({nr}, {string})				*setinterval()*
+		Evaluate the expression, {string}, every {nr} milliseconds.
+		If Vim is blocked, {string} will not be executated.  Intervals 
+		do not pile up.  The timer's resolution defaults to 100ms 
+		and can be changed by setting |ticktime|.  Vim is single-
+		threaded and all expressions are run within the main thread.  
+		Therefore, expressions should return control flow within
+		a short amount of time or else the end user won't be able to
+		do anything besides |c_CTRL-\_c|.  Intervals can be canceled
+		by calling |canceltimeout({interval_id})|.
+		Also see |settimeout()| and |canceltimeout()|.
+		{only available when compiled with the |+async| feature}
+		Examples: >
+			:call setinterval(1000, "call echo(2)")
 
 setline({lnum}, {text})					*setline()*
 		Set line {lnum} of the current buffer to {text}.  To insert
