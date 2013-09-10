@@ -4989,6 +4989,7 @@ c_Up	cmdline.txt	/*c_Up*
 c_digraph	cmdline.txt	/*c_digraph*
 c_wildchar	cmdline.txt	/*c_wildchar*
 call()	eval.txt	/*call()*
+canceltimeout()	eval.txt	/*canceltimeout()*
 carriage-return	intro.txt	/*carriage-return*
 case	change.txt	/*case*
 catch-all	eval.txt	/*catch-all*
