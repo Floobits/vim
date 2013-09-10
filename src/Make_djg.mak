@@ -19,6 +19,7 @@ INCL = vim.h globals.h option.h keymap.h macros.h ascii.h term.h os_msdos.h stru
 CFLAGS = -O2 -DMSDOS -Iproto $(DEFINES) -Wall -Dinterrupt= -Dfar= -DMAXMEM=512 -D_NAIVE_DOS_REGS
 
 OBJ = \
+	obj/async.o \
 	obj/blowfish.o \
 	obj/buffer.o \
 	obj/charset.o \

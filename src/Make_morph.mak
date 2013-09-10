@@ -24,7 +24,8 @@ RM =		rm
 .c.o:
 	${CC} ${CFLAGS} $< -o $@
 
-SRC =	blowfish.c						\
+SRC =	async.c						\
+	blowfish.c						\
 	buffer.c						\
 	charset.c						\
 	diff.c							\

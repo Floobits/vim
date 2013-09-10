@@ -136,6 +136,7 @@ SRC = \
 	version.c
 
 OBJ = \
+	async.o \
 	blowfish.o \
 	buffer.o \
 	charset.o \
@@ -183,6 +184,7 @@ OBJ = \
 	$(TERMLIB)
 
 PRO = \
+	proto/async.pro \
 	proto/blowfish.pro \
 	proto/buffer.pro \
 	proto/charset.pro \
@@ -284,6 +286,8 @@ $(PRO): $(GST) vim.h
 	$(CC) $(CFLAGS) GPFILE=proto/$*.pro $(PROPT) $*.c
 
 # dependencies
+async.o:		async.c
+proto/async.pro:	async.c
 blowfish.o:		blowfish.c
 proto/blowfish.pro:	blowfish.c
 buffer.o:		buffer.c

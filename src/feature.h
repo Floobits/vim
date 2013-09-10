@@ -467,6 +467,14 @@
 #endif
 
 /*
+ * +async		settimeout and setinterval functions.
+ */
+#if defined(FEAT_NORMAL) && defined(MSWIN) || defined(MACOS_X) || \
+	defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
+# define FEAT_ASYNC
+#endif
+
+/*
  * +diff		Displaying diffs in a nice way.
  *			Requires +windows and +autocmd.
  */

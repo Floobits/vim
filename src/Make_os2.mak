@@ -39,6 +39,7 @@ INCL = vim.h globals.h option.h keymap.h macros.h ascii.h term.h os_unix.h struc
 CFLAGS = -O2 -fno-strength-reduce -DOS2 -Wall -Iproto $(DEFINES)
 
 OBJ = \
+	async.o \
 	blowfish.o \
 	buffer.o \
 	charset.o \

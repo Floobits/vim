@@ -577,6 +577,7 @@ vimwinmain = \
 !endif
 
 vimobj =  \
+	$(OBJDIR)\async.obj \
 	$(OBJDIR)\blowfish.obj \
 	$(OBJDIR)\buffer.obj \
 	$(OBJDIR)\charset.obj \

@@ -527,6 +527,7 @@ RCFLAGS = -O coff $(DEFINES)
 
 OBJ = \
 	$(OUTDIR)/blowfish.o \
+	$(OUTDIR)/async.o \
 	$(OUTDIR)/buffer.o \
 	$(OUTDIR)/charset.o \
 	$(OUTDIR)/diff.o \

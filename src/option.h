@@ -795,6 +795,9 @@ EXTERN char_u	*p_titlestring;	/* 'titlestring' */
 #ifdef FEAT_INS_EXPAND
 EXTERN char_u	*p_tsr;		/* 'thesaurus' */
 #endif
+#ifdef FEAT_ASYNC
+EXTERN long	p_tt;		/* 'ticktime' */
+#endif
 EXTERN int	p_ttimeout;	/* 'ttimeout' */
 EXTERN long	p_ttm;		/* 'ttimeoutlen' */
 EXTERN int	p_tbi;		/* 'ttybuiltin' */

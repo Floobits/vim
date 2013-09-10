@@ -26,6 +26,7 @@ LD = dcc
 	${CC} ${PRE} ${CFLAGS} $< -o $@
 
 SRC = \
+	async.c \
 	blowfish.c \
 	buffer.c \
 	charset.c \
@@ -72,7 +73,8 @@ SRC = \
 	window.c \
 	version.c
 
-OBJ =	o/blowfish.o \
+OBJ =	o/async.o \
+	o/blowfish.o \
 	o/buffer.o \
 	o/charset.o \
 	o/diff.o \
@@ -136,6 +138,8 @@ $(SYMS)  : vim.h globals.h keymap.h macros.h ascii.h term.h os_amiga.h structs.h
 	delete $(SYMS)
 
 ###########################################################################
+
+o/async.o:	async.c  $(SYMS)
 
 o/blowfish.o:	blowfish.c  $(SYMS)
 

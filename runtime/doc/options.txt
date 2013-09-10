@@ -7253,6 +7253,17 @@ A jump table for the options with a short description can be found at |Q_op|.
 	uses another default.
 	Backticks cannot be used in this option for security reasons.
 
+						*'ticktime'* *'tt'*
+'ticktime' 'tt'	number	(default 100)
+			global
+			{not in Vi}
+	This is the resolution for all timers set with |setinterval()| and 
+	|settimeout()|.  Decreasing this number will make the timers
+	more accurate but will also make Vim less efficient.  To globally
+	disable all timers for debugging, set |ticktime| to -1.
+	Also see |setinterval()|, |settimeout()|, and |canceltimeout()|.
+	{only available when compiled with the |+async| feature}
+
 			     *'tildeop'* *'top'* *'notildeop'* *'notop'*
 'tildeop' 'top'		boolean	(default off)
 			global

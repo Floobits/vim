@@ -56,6 +56,7 @@
 #define HAVE_ST_MODE		/* have stat.st_mode */
 
 #define FEAT_SHORTCUT		/* resolve shortcuts */
+#define MCH_MONOTONIC_TIME	/* for async */
 
 #if (!defined(__BORLANDC__) || __BORLANDC__ >= 0x550) \
 	&& (!defined(_MSC_VER) || _MSC_VER > 1020)

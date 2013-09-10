@@ -55,4 +55,5 @@ void free_cmd_argsW __ARGS((void));
 void used_file_arg __ARGS((char *name, int literal, int full_path, int diff_mode));
 void set_alist_count __ARGS((void));
 void fix_arg_enc __ARGS((void));
+unsigned long long mch_monotonic_time __ARGS((void));
 /* vim: set ft=c : */

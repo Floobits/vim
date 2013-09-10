@@ -29,6 +29,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <limits.h>
+#include <math.h>
 
 /* cproto fails on missing include files */
 #ifndef PROTO
@@ -634,6 +635,52 @@ PlatformId(void)
     }
 }
 
+	unsigned long long
+mch_monotonic_time(void)
+{	
+	static ULONGLONG (*GetTickCount64) (void) = NULL;
+	static ULONGLONG (CALLBACK *_GetTickCount64)(void);
+	static int has_getickcount64 = -1;
+	ULONGLONG result;
+	OSVERSIONINFO ovi;
+
+	ovi.dwOSVersionInfoSize = sizeof(ovi);
+	GetVersionEx(&ovi);
+
+	if (has_getickcount64 == -1)
+	{
+	    /* GetTickCount64() was added to Windows Vista */
+	    if (ovi.dwMajorVersion >= 6)
+	    {
+	        HINSTANCE hKernel32 = GetModuleHandleW(L"KERNEL32");
+	        *(FARPROC*)&_GetTickCount64 = GetProcAddress(hKernel32,
+	                                                       "GetTickCount64");
+	        has_getickcount64 = (_GetTickCount64 != NULL);
+	    }
+	    else
+	        has_getickcount64 = 0;
+	}
+
+	if (has_getickcount64)
+	{
+	    result = _GetTickCount64();
+	}
+	else
+	{
+	    static DWORD last_ticks = 0;
+	    static DWORD n_overflow = 0;
+	    DWORD ticks;
+
+	    ticks = GetTickCount();
+	    if (ticks < last_ticks)
+	        n_overflow++;
+	    last_ticks = ticks;
+
+	    result = (unsigned long long)ldexp(n_overflow, 32);
+	    result += ticks;
+	}
+    return result;
+}
 /*
  * Return TRUE when running on Windows 95 (or 98 or ME).
  * Only to be used after mch_init().
