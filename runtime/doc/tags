@@ -1014,6 +1014,7 @@ $VIMRUNTIME	starting.txt	/*$VIMRUNTIME*
 'tf'	options.txt	/*'tf'*
 'tgst'	options.txt	/*'tgst'*
 'thesaurus'	options.txt	/*'thesaurus'*
+'ticktime'	options.txt	/*'ticktime'*
 'tildeop'	options.txt	/*'tildeop'*
 'timeout'	options.txt	/*'timeout'*
 'timeoutlen'	options.txt	/*'timeoutlen'*
@@ -1032,6 +1033,7 @@ $VIMRUNTIME	starting.txt	/*$VIMRUNTIME*
 'ts'	options.txt	/*'ts'*
 'tsl'	options.txt	/*'tsl'*
 'tsr'	options.txt	/*'tsr'*
+'tt'	options.txt	/*'tt'*
 'ttimeout'	options.txt	/*'ttimeout'*
 'ttimeoutlen'	options.txt	/*'ttimeoutlen'*
 'ttm'	options.txt	/*'ttm'*
@@ -4987,6 +4989,7 @@ c_Up	cmdline.txt	/*c_Up*
 c_digraph	cmdline.txt	/*c_digraph*
 c_wildchar	cmdline.txt	/*c_wildchar*
 call()	eval.txt	/*call()*
+canceltimeout()	eval.txt	/*canceltimeout()*
 carriage-return	intro.txt	/*carriage-return*
 case	change.txt	/*case*
 catch-all	eval.txt	/*catch-all*
@@ -7653,6 +7656,7 @@ set-option	options.txt	/*set-option*
 set-spc-auto	spell.txt	/*set-spc-auto*
 setbufvar()	eval.txt	/*setbufvar()*
 setcmdpos()	eval.txt	/*setcmdpos()*
+setinterval()	eval.txt	/*setinterval()*
 setline()	eval.txt	/*setline()*
 setloclist()	eval.txt	/*setloclist()*
 setmatches()	eval.txt	/*setmatches()*
@@ -7661,6 +7665,7 @@ setqflist()	eval.txt	/*setqflist()*
 setreg()	eval.txt	/*setreg()*
 settabvar()	eval.txt	/*settabvar()*
 settabwinvar()	eval.txt	/*settabwinvar()*
+settimeout()	eval.txt	/*settimeout()*
 setting-guifont	gui.txt	/*setting-guifont*
 setting-guitablabel	tabpage.txt	/*setting-guitablabel*
 setting-tabline	tabpage.txt	/*setting-tabline*

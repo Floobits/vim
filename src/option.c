@@ -2590,6 +2590,14 @@ static struct vimoption
 			    (char_u *)NULL, PV_NONE,
 #endif
 			    {(char_u *)"", (char_u *)0L} SCRIPTID_INIT},
+    {"ticktime",  "tt",   P_NUM|P_VI_DEF,
+#ifdef FEAT_ASYNC
+				(char_u *)&p_tt, PV_NONE,
+#else
+			    (char_u *)NULL, PV_NONE,
+#endif
+			    {(char_u *)100L, (char_u *)0L} SCRIPTID_INIT},
+
     {"tildeop",	    "top",  P_BOOL|P_VI_DEF|P_VIM,
 			    (char_u *)&p_to, PV_NONE,
 			    {(char_u *)FALSE, (char_u *)0L} SCRIPTID_INIT},
