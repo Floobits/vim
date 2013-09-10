@@ -674,6 +674,11 @@ static void f_setline __ARGS((typval_T *argvars, typval_T *rettv));
 static void f_setloclist __ARGS((typval_T *argvars, typval_T *rettv));
 static void f_setmatches __ARGS((typval_T *argvars, typval_T *rettv));
 static void f_setpos __ARGS((typval_T *argvars, typval_T *rettv));
+#ifdef FEAT_ASYNC
+static void f_canceltimeout __ARGS((typval_T *argvars, typval_T *rettv));
+static void f_setinterval __ARGS((typval_T *argvars, typval_T *rettv));
+static void f_settimeout __ARGS((typval_T *argvars, typval_T *rettv));
+#endif
 static void f_setqflist __ARGS((typval_T *argvars, typval_T *rettv));
 static void f_setreg __ARGS((typval_T *argvars, typval_T *rettv));
 static void f_settabvar __ARGS((typval_T *argvars, typval_T *rettv));
@@ -7861,6 +7866,9 @@ static struct fst
     {"byte2line",	1, 1, f_byte2line},
     {"byteidx",		2, 2, f_byteidx},
     {"call",		2, 3, f_call},
+#ifdef FEAT_ASYNC
+    {"canceltimeout", 1, 1, f_canceltimeout},
+#endif
 #ifdef FEAT_FLOAT
     {"ceil",		1, 1, f_ceil},
 #endif
@@ -8059,6 +8067,9 @@ static struct fst
     {"serverlist",	0, 0, f_serverlist},
     {"setbufvar",	3, 3, f_setbufvar},
     {"setcmdpos",	1, 1, f_setcmdpos},
+#ifdef FEAT_ASYNC
+    {"setinterval",    2, 2, f_setinterval},
+#endif
     {"setline",		2, 2, f_setline},
     {"setloclist",	2, 3, f_setloclist},
     {"setmatches",	1, 1, f_setmatches},
@@ -8067,6 +8078,9 @@ static struct fst
     {"setreg",		2, 3, f_setreg},
     {"settabvar",	3, 3, f_settabvar},
     {"settabwinvar",	4, 4, f_settabwinvar},
+#ifdef FEAT_ASYNC
+    {"settimeout",    2, 2, f_settimeout},
+#endif
     {"setwinvar",	3, 3, f_setwinvar},
 #ifdef FEAT_CRYPT
     {"sha256",		1, 1, f_sha256},
@@ -12416,6 +12430,9 @@ f_has(argvars, rettv)
 #ifdef FEAT_RELTIME
 	"reltime",
 #endif
+#ifdef FEAT_ASYNC
+    "async",
+#endif
 #ifdef FEAT_QUICKFIX
 	"quickfix",
 #endif
@@ -16588,6 +16605,93 @@ f_setmatches(argvars, rettv)
     }
 #endif
 }
+
+#ifdef FEAT_ASYNC
+static int timeout_id = 0;
+
+    static void
+set_timeout(argvars, rettv, interval)
+    typval_T    *argvars;
+    typval_T    *rettv;
+    int interval;
+{
+    long i = get_tv_number(&argvars[0]);
+    char_u *cmd = get_tv_string(&argvars[1]);
+    struct timeval now;
+    rettv->v_type = VAR_NUMBER;
+
+    if (i < 0) {
+        rettv->vval.v_number = -1;
+        EMSG2(_(e_invarg2), "Interval cannot be negative.");
+        return;
+    }
+
+    gettimeofday(&now, NULL);
+    timeout_T *to = malloc(sizeof(timeout_T));
+    to->id = timeout_id++;
+    rettv->vval.v_number = to->id;
+    to->tm = now.tv_sec * 1000 + now.tv_usec/1000 + i;
+    to->cmd = (char_u*)strdup((char*)cmd);
+    to->interval = interval ? i : -1;
+    to->next = NULL;
+
+    insert_timeout(to);
+}
+
+    static void
+f_setinterval(argvars, rettv)
+    typval_T    *argvars;
+    typval_T    *rettv;
+{
+    set_timeout(argvars, rettv, TRUE);
+}
+
+    static void
+f_settimeout(argvars, rettv)
+    typval_T    *argvars;
+    typval_T    *rettv;
+{
+    set_timeout(argvars, rettv, FALSE);
+}
+
+    static void
+f_canceltimeout(argvars, rettv)
+    typval_T    *argvars;
+    typval_T    *rettv;
+{
+    long id = get_tv_number(&argvars[0]);
+    if (id < 0) {
+        rettv->vval.v_number = -1;
+        EMSG2(_(e_invarg2), "Timeout id cannot be negative.");
+        return;
+    }
+
+    timeout_T *tmp = timeouts;
+    timeout_T *prev = NULL;
+    timeout_T *next;
+    while (tmp != NULL) {
+        next = tmp->next;
+        if (tmp->id == id) {
+            if (prev) {
+                prev->next = next;
+            } else {
+                timeouts = next;
+            }
+            free(tmp->cmd);
+            free(tmp);
+            rettv->vval.v_number = 0;
+            rettv->v_type = VAR_NUMBER;
+            return;
+        } else {
+            prev = tmp;
+        }
+        tmp = next;
+    }
+    rettv->vval.v_number = 1;
+    rettv->v_type = VAR_NUMBER;
+    EMSG2(_(e_invarg2), "Timeout id not found.");
+}
+#endif
 
 /*
  * "setpos()" function
