@@ -7664,6 +7664,7 @@ setqflist()	eval.txt	/*setqflist()*
 setreg()	eval.txt	/*setreg()*
 settabvar()	eval.txt	/*settabvar()*
 settabwinvar()	eval.txt	/*settabwinvar()*
+settimeout()	eval.txt	/*settimeout()*
 setting-guifont	gui.txt	/*setting-guifont*
 setting-guitablabel	tabpage.txt	/*setting-guitablabel*
 setting-tabline	tabpage.txt	/*setting-tabline*
