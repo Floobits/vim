@@ -7254,10 +7254,10 @@ A jump table for the options with a short description can be found at |Q_op|.
 	Backticks cannot be used in this option for security reasons.
 
 						*'ticktime'* *'tt'*
-'ticktime' 'ut'	number	(default 100)
+'ticktime' 'tt'	number	(default 100)
 			global
 			{not in Vi}
-	The resolution for all timers set with |setinterval()| and 
+	This is the resolution for all timers set with |setinterval()| and 
 	|settimeout()|.  Decreasing this number will make the timers
 	more accurate but will also make Vim less efficient.  To globally
 	disable all timers for debugging, set |ticktime| to -1.

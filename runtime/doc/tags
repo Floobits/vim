@@ -1014,7 +1014,7 @@ $VIMRUNTIME	starting.txt	/*$VIMRUNTIME*
 'tf'	options.txt	/*'tf'*
 'tgst'	options.txt	/*'tgst'*
 'thesaurus'	options.txt	/*'thesaurus'*
-'ticktime'	options.txt 	/*'ticktime'*
+'ticktime'	options.txt	/*'ticktime'*
 'tildeop'	options.txt	/*'tildeop'*
 'timeout'	options.txt	/*'timeout'*
 'timeoutlen'	options.txt	/*'timeoutlen'*
@@ -1033,6 +1033,7 @@ $VIMRUNTIME	starting.txt	/*$VIMRUNTIME*
 'ts'	options.txt	/*'ts'*
 'tsl'	options.txt	/*'tsl'*
 'tsr'	options.txt	/*'tsr'*
+'tt'	options.txt	/*'tt'*
 'ttimeout'	options.txt	/*'ttimeout'*
 'ttimeoutlen'	options.txt	/*'ttimeoutlen'*
 'ttm'	options.txt	/*'ttm'*
@@ -7654,7 +7655,7 @@ set-option	options.txt	/*set-option*
 set-spc-auto	spell.txt	/*set-spc-auto*
 setbufvar()	eval.txt	/*setbufvar()*
 setcmdpos()	eval.txt	/*setcmdpos()*
-setinterval()	eval.txt 	/*setinterval()
+setinterval()	eval.txt	/*setinterval()*
 setline()	eval.txt	/*setline()*
 setloclist()	eval.txt	/*setloclist()*
 setmatches()	eval.txt	/*setmatches()*
