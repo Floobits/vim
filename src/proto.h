@@ -293,3 +293,7 @@ void clip_mch_set_selection(VimClipboard *cbd);
 # define _PROTO_H
 #endif
 #endif /* !PROTO && !NOPROTO */
+
+#ifdef FEAT_ASYNC
+# include "async.pro"
+#endif

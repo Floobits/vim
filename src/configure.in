@@ -3240,6 +3240,13 @@ if test "x$vim_cv_getcwd_broken" = "xyes" ; then
   AC_DEFINE(BAD_GETCWD)
 fi
 
+AC_CHECK_FUNCS(clock_gettime, [], [
+  AC_CHECK_LIB(rt, clock_gettime, [
+     LIBS="$LIBS -lrt"
+   ])
+])
+
+
 dnl Check for functions in one big call, to reduce the size of configure.
 dnl Can only be used for functions that do not require any include.
 AC_CHECK_FUNCS(bcmp fchdir fchown fsync getcwd getpseudotty \

@@ -16617,7 +16617,6 @@ set_timeout(argvars, rettv, interval)
 {
     long i = get_tv_number(&argvars[0]);
     char_u *cmd = get_tv_string(&argvars[1]);
-    struct timeval now;
     rettv->v_type = VAR_NUMBER;
 
     if (i < 0) {
@@ -16626,11 +16625,10 @@ set_timeout(argvars, rettv, interval)
         return;
     }
 
-    gettimeofday(&now, NULL);
     timeout_T *to = malloc(sizeof(timeout_T));
     to->id = timeout_id++;
+    to->tm = get_monotonic_time() + i;
     rettv->vval.v_number = to->id;
-    to->tm = now.tv_sec * 1000 + now.tv_usec/1000 + i;
     to->cmd = (char_u*)strdup((char*)cmd);
     to->interval = interval ? i : -1;
     to->next = NULL;

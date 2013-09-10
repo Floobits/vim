@@ -2863,6 +2863,7 @@ gui_wait_for_chars(wtime)
     long    wtime;
 {
     int	    retval;
+    int i = 0;
 
 #ifdef FEAT_MENU
     /*
@@ -2899,7 +2900,7 @@ gui_wait_for_chars(wtime)
 
     retval = FAIL;
 
-    int i = 0;
+    i = 0;
     while (i < p_ut) {
 #ifdef FEAT_ASYNC
 		retval = gui_mch_wait_for_chars(p_tt);

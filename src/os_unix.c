@@ -892,6 +892,17 @@ catch_sigpwr SIGDEFARG(sigarg)
 }
 #endif
 
+#if !defined(MACOS_X_UNIX)
+#define MCH_MONOTONIC_TIME
+	unsigned long long
+mch_monotonic_time(void)
+{
+	struct timespec ts;
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+}
+#endif
+
 #ifdef SET_SIG_ALARM
 /*
  * signal function for alarm().
@@ -5072,18 +5083,21 @@ RealWaitForChar(fd, msec, check_for_gpm)
     if (msec > 0 && (
 #  ifdef FEAT_XCLIPBOARD
 	    xterm_Shell != (Widget)0
-#   if defined(USE_XSMP) || defined(FEAT_MZSCHEME)
+#   if defined(USE_XSMP) || defined(FEAT_MZSCHEME) || defined(FEAT_ASYNC)
 	    ||
 #   endif
 #  endif
 #  ifdef USE_XSMP
 	    xsmp_icefd != -1
-#   ifdef FEAT_MZSCHEME
+#   if defined(FEAT_MZSCHEME) || defined(FEAT_ASYNC)
 	    ||
 #   endif
 #  endif
 #  ifdef FEAT_MZSCHEME
 	(mzthreads_allowed() && p_mzq > 0)
+#   ifdef FEAT_ASYNC
+	    ||
+#   endif
 #  endif
 #  ifdef FEAT_ASYNC
 	TRUE
@@ -7385,6 +7399,5 @@ char CtrlCharTable[]=
       0,  0,  0,  0,  0,  0,230,173,  0,  0,  0,  0,  0,197,198,199,
       0,  0,229,  0,  0,  0,  0,196,  0,  0,  0,  0,227,228,  0,233,
 };
-
 
 #endif

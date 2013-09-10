@@ -34,7 +34,8 @@ SHELL = csh
 REN = $(SHELL) -c mv -f
 DEL = $(SHELL) -c rm -f
 
-SRC =	blowfish.c \
+SRC =	async.c \
+	blowfish.c \
 	buffer.c \
 	charset.c \
 	diff.c \
@@ -82,7 +83,8 @@ SRC =	blowfish.c \
 
 INCL = vim.h feature.h keymap.h macros.h ascii.h term.h structs.h os_amiga.h
 
-OBJ =	obj/blowfish.o \
+OBJ =	obj/async.o \
+	obj/blowfish.o \
 	obj/buffer.o \
 	obj/charset.o \
 	obj/diff.o \
@@ -128,7 +130,8 @@ OBJ =	obj/blowfish.o \
 	obj/window.o \
 	$(TERMLIB)
 
-PRO =	proto/blowfish.pro \
+PRO =	proto/async.pro \
+	proto/blowfish.pro \
 	proto/buffer.pro \
 	proto/charset.pro \
 	proto/diff.pro \
@@ -217,6 +220,9 @@ CCSYM = $(CC) $(CFLAGS) -hi$(SYMS) -o
 CCNOSYM = $(CC) $(CFLAGS) -o
 
 $(OBJ): $(SYMS)
+
+obj/async.o:	async.c
+	$(CCSYM) $@ async.c
 
 obj/blowfish.o:	blowfish.c
 	$(CCSYM) $@ blowfish.c

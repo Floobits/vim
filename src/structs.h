@@ -2548,7 +2548,7 @@ typedef struct {
 struct timeout_T {
     int id;                     /* timeout/interval id */
     int interval;               /* interval period if interval, otherwise -1 */
-    unsigned long tm;           /* time to fire (epoch milliseconds) */
+    unsigned long long tm;           /* time to fire (epoch milliseconds) */
     char_u *cmd;                /* vim command to run */
     struct timeout_T *next;     /* pointer to next timeout in linked list */
 };

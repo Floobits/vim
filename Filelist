@@ -8,7 +8,6 @@ SRC_ALL =	\
 		src/arabic.h \
 		src/ascii.h \
 		src/async.c \
-		src/async.h \
 		src/blowfish.c \
 		src/buffer.c \
 		src/charset.c \
@@ -96,6 +95,7 @@ SRC_ALL =	\
 		src/testdir/python_after/*.py \
 		src/testdir/python_before/*.py \
 		src/proto.h \
+		src/proto/async.pro \
 		src/proto/blowfish.pro \
 		src/proto/buffer.pro \
 		src/proto/charset.pro \

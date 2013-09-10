@@ -525,6 +525,7 @@ INCL =	vim.h os_win32.h ascii.h feature.h globals.h keymap.h macros.h \
 	$(NBDEBUG_INCL)
 
 OBJ = \
+	$(OUTDIR)\async.obj \
 	$(OUTDIR)\blowfish.obj \
 	$(OUTDIR)\buffer.obj \
 	$(OUTDIR)\charset.obj \
@@ -1054,6 +1055,8 @@ testclean:
 .cpp{$(OUTDIR)/}.obj::
 !ENDIF
 	$(CC) $(CFLAGS) $<
+
+$(OUTDIR)/async.obj:	$(OUTDIR) async.c  $(INCL)
 
 $(OUTDIR)/blowfish.obj:	$(OUTDIR) blowfish.c  $(INCL)
 

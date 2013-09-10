@@ -290,6 +290,7 @@ testclean {virtual}:
 # Some are optional and depend on configure.
 # "version.c" is missing, it's always compiled (see below).
 Source =
+        async.c
         blowfish.c
         buffer.c
         charset.c
