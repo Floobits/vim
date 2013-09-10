@@ -44,7 +44,7 @@ call_timeouts() {
     timeout_T *tmp;
 
     while (timeouts != NULL && timeouts->tm < tm) {
-        eval_to_string(timeouts->cmd, NULL, FALSE);
+        do_cmdline_cmd(timeouts->cmd);
         tmp = timeouts;
         timeouts = timeouts->next;
         if (tmp->interval == -1) {

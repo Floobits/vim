@@ -395,9 +395,6 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
     {
 	while (WaitForChar(wtime) == 0)		/* no character available */
 	{	
-		#ifdef FEAT_ASYNC
-		call_timeouts();
-		#endif
 	    if (!do_resize)	/* return if not interrupted by resize */
 		return 0;
 	    handle_resize();
@@ -415,19 +412,7 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
 	 * Also done when interrupted by SIGWINCH.
 	 */
 
-#ifdef FEAT_ASYNC
-	int t = 0;
-	while (t < p_ut) {
-		retval = WaitForChar(p_tt);
-		call_timeouts();
-		t += p_tt;
-		if (retval == OK) {
-			break;
-		}
-	}
-#else
 	retval = WaitForChar(p_ut);
-#endif
 
 	if (retval == FAIL)
 	{
@@ -460,28 +445,12 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
 	 * or by an event on the monitored file descriptors.
 	 */
 
-	
-	#ifdef FEAT_ASYNC
-	while (TRUE) {
-		retval = WaitForChar(p_tt);
-		call_timeouts();
-		if (retval == OK) {
-			break;
-		}
-	    if (do_resize) {
-    	    /* interrupted by SIGWINCH signal */
-    		handle_resize();
-    	    return 0;
-	    }
-	}
-	#else
 	if (WaitForChar(-1L) == 0)
 	{
 	    if (do_resize)	    /* interrupted by SIGWINCH signal */
 		handle_resize();
 	    return 0;
 	}
-	#endif
 #endif
 
 	/* If input was put directly in typeahead buffer bail out here. */
@@ -5093,7 +5062,7 @@ RealWaitForChar(fd, msec, check_for_gpm)
 #ifdef FEAT_NETBEANS_INTG
     int		nb_fd = netbeans_filedesc();
 #endif
-#if defined(FEAT_XCLIPBOARD) || defined(USE_XSMP) || defined(FEAT_MZSCHEME)
+#if defined(FEAT_XCLIPBOARD) || defined(USE_XSMP) || defined(FEAT_MZSCHEME) || defined(FEAT_ASYNC)
     static int	busy = FALSE;
 
     /* May retry getting characters after an event was handled. */
@@ -5120,6 +5089,9 @@ RealWaitForChar(fd, msec, check_for_gpm)
 #  endif
 #  ifdef FEAT_MZSCHEME
 	(mzthreads_allowed() && p_mzq > 0)
+#  endif
+#  ifdef FEAT_ASYNC
+	TRUE
 #  endif
 	    ))
 	gettimeofday(&start_tv, NULL);
@@ -5164,6 +5136,12 @@ RealWaitForChar(fd, msec, check_for_gpm)
 	{
 	    towait = (int)p_mzq;    /* don't wait longer than 'mzquantum' */
 	    mzquantum_used = TRUE;
+	}
+# endif
+# ifdef FEAT_ASYNC
+	call_timeouts();
+	if (p_tt > 0 && (msec < 0 || msec > p_tt)) {
+		towait = p_tt;
 	}
 # endif
 	fds[0].fd = fd;
@@ -5293,6 +5271,12 @@ RealWaitForChar(fd, msec, check_for_gpm)
 	    mzquantum_used = TRUE;
 	}
 # endif
+# ifdef FEAT_ASYNC
+	call_timeouts();
+	if (p_tt > 0 && (msec < 0 || msec > p_tt)) {
+		towait = p_tt;
+	}
+# endif
 # ifdef __EMX__
 	/* don't check for incoming chars if not in raw mode, because select()
 	 * always returns TRUE then (in some version of emx.dll) */
@@ -5403,6 +5387,10 @@ select_eintr:
 # ifdef FEAT_MZSCHEME
 	if (ret == 0 && mzquantum_used)
 	    /* loop if MzThreads must be scheduled and timeout occurred */
+	    finished = FALSE;
+# endif
+# ifdef FEAT_ASYNC
+	if (ret == 0 && msec > p_tt)
 	    finished = FALSE;
 # endif
 
