@@ -1584,7 +1584,7 @@ MEMFILE_TEST_OBJ = $(OBJ_COMMON) \
         objects/memfile_test.o
 
 PRO_AUTO = \
-	async.pro \
+	timers.pro \
 	blowfish.pro \
 	buffer.pro \
 	charset.pro \
@@ -2838,7 +2838,7 @@ $(APPDIR)/Contents:
 ### Dependencies:
 objects/timers.o: timers.c vim.h auto/config.h feature.h os_unix.h os_mac.h ascii.h \
   keymap.h term.h macros.h option.h structs.h regexp.h gui.h ex_cmds.h \
-  proto.h proto/async.pro globals.h farsi.h arabic.h auto/osdef.h
+  proto.h proto/timers.pro globals.h farsi.h arabic.h auto/osdef.h
 objects/blowfish.o: blowfish.c vim.h auto/config.h feature.h os_unix.h \
  auto/osdef.h ascii.h keymap.h term.h macros.h option.h structs.h \
  regexp.h gui.h gui_beval.h proto/gui_beval.pro ex_cmds.h proto.h \

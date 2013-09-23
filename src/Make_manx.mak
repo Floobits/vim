@@ -130,7 +130,7 @@ OBJ =	obj/timers.o \
 	obj/window.o \
 	$(TERMLIB)
 
-PRO =	proto/async.pro \
+PRO =	proto/timers.pro \
 	proto/blowfish.pro \
 	proto/buffer.pro \
 	proto/charset.pro \

@@ -184,7 +184,7 @@ OBJ = \
 	$(TERMLIB)
 
 PRO = \
-	proto/async.pro \
+	proto/timers.pro \
 	proto/blowfish.pro \
 	proto/buffer.pro \
 	proto/charset.pro \
@@ -287,7 +287,7 @@ $(PRO): $(GST) vim.h
 
 # dependencies
 timers.o:		timers.c
-proto/async.pro:	timers.c
+proto/timers.pro:	timers.c
 blowfish.o:		blowfish.c
 proto/blowfish.pro:	blowfish.c
 buffer.o:		buffer.c

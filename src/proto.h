@@ -295,5 +295,5 @@ void clip_mch_set_selection(VimClipboard *cbd);
 #endif /* !PROTO && !NOPROTO */
 
 #ifdef FEAT_TIMERS
-# include "async.pro"
+# include "timers.pro"
 #endif
