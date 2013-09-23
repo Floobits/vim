@@ -5071,6 +5071,9 @@ RealWaitForChar(fd, msec, check_for_gpm)
 #if defined(FEAT_XCLIPBOARD) || defined(USE_XSMP) || defined(FEAT_MZSCHEME) || defined(FEAT_TIMERS)
     static int	busy = FALSE;
 
+#ifdef FEAT_TIMERS
+    unsigned long long now;
+#endif
     /* May retry getting characters after an event was handled. */
 # define MAY_LOOP
 
@@ -5149,8 +5152,22 @@ RealWaitForChar(fd, msec, check_for_gpm)
 # endif
 # ifdef FEAT_TIMERS
 	call_timeouts();
-	if (p_tt > 0 && (msec < 0 || msec > p_tt)) {
-		towait = p_tt;
+	/* limit towait to p_tt at greatest */
+
+	// if there is not a timer, change towait so that it will get called
+	if (timeouts != NULL && msec !=0)
+	{
+		now = get_monotonic_time();
+		towait = timeouts->tm - now;
+		
+		/* don't accidentally wait forever (this should never happend) */
+		/* don't wake up every 1 ms ... limit to p_tt */
+		if (towait < 0 || towait < p_tt)
+			towait = p_tt;
+
+		/* don't overshoot the wait time */
+		if (msec > 0 && towait > msec)
+			towait = msec;
 	}
 # endif
 	fds[0].fd = fd;
@@ -5282,8 +5299,22 @@ RealWaitForChar(fd, msec, check_for_gpm)
 # endif
 # ifdef FEAT_TIMERS
 	call_timeouts();
-	if (p_tt > 0 && (msec < 0 || msec > p_tt)) {
-		towait = p_tt;
+	/* limit towait to p_tt at greatest */
+
+	// if there is not a timer, change towait so that it will get called
+	if (timeouts != NULL && msec !=0)
+	{
+		now = get_monotonic_time();
+		towait = timeouts->tm - now;
+		
+		/* don't accidentally wait forever (this should never happend) */
+		/* don't wake up every 1 ms ... limit to p_tt */
+		if (towait < 0 || towait < p_tt)
+			towait = p_tt;
+
+		/* don't overshoot the wait time */
+		if (msec > 0 && towait > msec)
+			towait = msec;
 	}
 # endif
 # ifdef __EMX__
