@@ -73,7 +73,7 @@ call_timeouts(void)
 		retval = do_cmdline_cmd(timeouts->cmd);
 		tmp = timeouts;
 		timeouts = timeouts->next;
-		if (tmp->interval == -1 || retval == FAIL || (!got_int && (did_throw || did_emsg)))
+		if (tmp->interval == -1 || retval == FAIL || did_throw || did_emsg))
 		{
 			free(tmp->cmd);
 			free(tmp);
