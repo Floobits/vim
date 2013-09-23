@@ -74,7 +74,9 @@ call_timeouts(void)
 		tmp = timeouts;
 		timeouts = timeouts->next;
 		if (tmp->interval == -1 || retval == FAIL || did_throw || did_emsg))
-		{
+		{	
+			if (got_int)
+				EMSG(_("E693: Can only compare Funcref with Funcref"))
 			free(tmp->cmd);
 			free(tmp);
 		} 

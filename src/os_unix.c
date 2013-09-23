@@ -5160,7 +5160,7 @@ RealWaitForChar(fd, msec, check_for_gpm)
 		now = get_monotonic_time();
 		towait = timeouts->tm - now;
 		
-		/* don't accidentally wait forever (this should never happend) */
+		/* don't accidentally wait forever (this should never happen) */
 		/* don't wake up every 1 ms ... limit to p_tt */
 		if (towait < 0 || towait < p_tt)
 			towait = p_tt;
@@ -5307,7 +5307,7 @@ RealWaitForChar(fd, msec, check_for_gpm)
 		now = get_monotonic_time();
 		towait = timeouts->tm - now;
 		
-		/* don't accidentally wait forever (this should never happend) */
+		/* don't accidentally wait forever (this should never happen) */
 		/* don't wake up every 1 ms ... limit to p_tt */
 		if (towait < 0 || towait < p_tt)
 			towait = p_tt;
