@@ -2287,7 +2287,7 @@ canceltimeout({nr})					*canceltimeout()*
 		Cancel the timeout or interval with id, {nr}, preventing it 
 		from every firing.
 		Also see |settimeout()| and |setinterval()|.
-		{only available when compiled with the |+async| feature}
+		{only available when compiled with the |+timers| feature}
 		Examples: >
 			let timeout_id = settimeout(5000, 'echo(2)')
 			echo canceltimeout(timeout_id)
@@ -5198,7 +5198,7 @@ setcmdpos({pos})					*setcmdpos()*
 		Returns 0 when successful, 1 when not editing the command
 		line.
 
-setinterval({nr}, {string})				*setinterval()*
+setinterval({nr}, {string})				*setinterval()* *E881*
 		Immediately returns an interval id and evaluate the expression, 
 		{string}, every {nr} milliseconds. Intervals do not pile up.  
 		The timer's resolution defaults to 100ms and can be changed by 
@@ -5208,7 +5208,7 @@ setinterval({nr}, {string})				*setinterval()*
 		the main thread.  Therefore, expressions should return control 
 		flow within	a short amount of time.
 		Also see |settimeout()| and |canceltimeout()|.
-		{only available when compiled with the |+async| feature}
+		{only available when compiled with the |+timers| feature}
 		Examples: >
 			:call setinterval(1000, "call echo(2)")
 <		2
@@ -5394,7 +5394,7 @@ settimeout({nr}, {string})				*settimeout()*
 		the main thread.  Therefore, expressions should return control 
 		flow within	a short amount of time.  
 		Also see |setinterval()| and |canceltimeout()|.
-		{only available when compiled with the |+async| feature}
+		{only available when compiled with the |+timers| feature}
 		Examples: >
 			:call settimeout(1000, "call echo(2)")
 <		2

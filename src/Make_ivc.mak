@@ -210,7 +210,6 @@ ALL : .\$(VIM).exe vimrun.exe install.exe uninstal.exe xxd/xxd.exe GvimExt/gvime
 
 LINK32_OBJS= \
 	$(EXTRAS) \
-	"$(INTDIR)/async.obj" \
 	"$(INTDIR)/blowfish.obj" \
 	"$(INTDIR)/buffer.obj" \
 	"$(INTDIR)/charset.obj" \
@@ -254,6 +253,7 @@ LINK32_OBJS= \
 	"$(INTDIR)/syntax.obj" \
 	"$(INTDIR)/tag.obj" \
 	"$(INTDIR)/term.obj" \
+	"$(INTDIR)/timers.obj" \
 	"$(INTDIR)/ui.obj" \
 	"$(INTDIR)/undo.obj" \
 	"$(INTDIR)/version.obj" \
@@ -326,10 +326,6 @@ GvimExt/gvimext.dll: GvimExt/gvimext.cpp GvimExt/gvimext.rc GvimExt/gvimext.h
 # Name "Vim - Win32 Release vim"
 # Name "Vim - Win32 Debug vim"
 
-# Begin Source File
-
-SOURCE=.\timers.c
-# End Source File
 # Begin Source File
 
 SOURCE=.\blowfish.c
@@ -651,6 +647,10 @@ SOURCE=.\tag.c
 # Begin Source File
 
 SOURCE=.\term.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\timers.c
 # End Source File
 # Begin Source File
 

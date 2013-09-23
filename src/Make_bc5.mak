@@ -577,7 +577,6 @@ vimwinmain = \
 !endif
 
 vimobj =  \
-	$(OBJDIR)\async.obj \
 	$(OBJDIR)\blowfish.obj \
 	$(OBJDIR)\buffer.obj \
 	$(OBJDIR)\charset.obj \
@@ -618,6 +617,7 @@ vimobj =  \
 	$(OBJDIR)\syntax.obj \
 	$(OBJDIR)\tag.obj \
 	$(OBJDIR)\term.obj \
+	$(OBJDIR)\timers.obj \
 	$(OBJDIR)\ui.obj \
 	$(OBJDIR)\undo.obj \
 	$(OBJDIR)\version.obj \

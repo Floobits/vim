@@ -52,7 +52,6 @@ SPAWNL = spawnl.lib
 
 EXE_dependencies = \
 	blowfish.obj \
-	async.obj \
 	buffer.obj \
 	charset.obj \
 	diff.obj \
@@ -92,6 +91,7 @@ EXE_dependencies = \
 	syntax.obj \
 	tag.obj \
 	term.obj \
+	timers.obj \
 	ui.obj \
 	undo.obj \
 	window.obj

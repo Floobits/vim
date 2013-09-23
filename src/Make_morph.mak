@@ -24,8 +24,7 @@ RM =		rm
 .c.o:
 	${CC} ${CFLAGS} $< -o $@
 
-SRC =	timers.c						\
-	blowfish.c						\
+SRC =	blowfish.c						\
 	buffer.c						\
 	charset.c						\
 	diff.c							\
@@ -66,6 +65,7 @@ SRC =	timers.c						\
 	syntax.c						\
 	tag.c							\
 	term.c							\
+	timers.c						\
 	ui.c							\
 	undo.c							\
 	version.c						\

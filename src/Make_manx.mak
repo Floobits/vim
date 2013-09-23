@@ -34,8 +34,7 @@ SHELL = csh
 REN = $(SHELL) -c mv -f
 DEL = $(SHELL) -c rm -f
 
-SRC =	timers.c \
-	blowfish.c \
+SRC =	blowfish.c \
 	buffer.c \
 	charset.c \
 	diff.c \
@@ -76,6 +75,7 @@ SRC =	timers.c \
 	syntax.c \
 	tag.c \
 	term.c \
+	timers.c \
 	ui.c \
 	undo.c \
 	window.c \
@@ -130,8 +130,7 @@ OBJ =	obj/timers.o \
 	obj/window.o \
 	$(TERMLIB)
 
-PRO =	proto/timers.pro \
-	proto/blowfish.pro \
+PRO =	proto/blowfish.pro \
 	proto/buffer.pro \
 	proto/charset.pro \
 	proto/diff.pro \
@@ -173,6 +172,7 @@ PRO =	proto/timers.pro \
 	proto/tag.pro \
 	proto/term.pro \
 	proto/termlib.pro \
+	proto/timers.pro \
 	proto/ui.pro \
 	proto/undo.pro \
 	proto/window.pro
@@ -220,9 +220,6 @@ CCSYM = $(CC) $(CFLAGS) -hi$(SYMS) -o
 CCNOSYM = $(CC) $(CFLAGS) -o
 
 $(OBJ): $(SYMS)
-
-obj/timers.o:	timers.c
-	$(CCSYM) $@ timers.c
 
 obj/blowfish.o:	blowfish.c
 	$(CCSYM) $@ blowfish.c
@@ -353,6 +350,9 @@ obj/term.o:	term.c term.h
 
 obj/termlib.o:	termlib.c
 	$(CCSYM) $@ termlib.c
+
+obj/timers.o:	timers.c
+	$(CCSYM) $@ timers.c
 
 obj/ui.o:	ui.c
 	$(CCSYM) $@ ui.c

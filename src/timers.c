@@ -78,7 +78,7 @@ call_timeouts(max_to_wait)
 		if (tmp->interval == -1 || retval == FAIL || did_throw || did_emsg)
 		{	
 			if (got_int)
-				EMSG(_("E693: Can only compare Funcref with Funcref"));
+				EMSG(_("E881: An interval was canceled because of an interrupt."));
 			free(tmp->cmd);
 			free(tmp);
 		} 

@@ -26,7 +26,6 @@ LD = dcc
 	${CC} ${PRE} ${CFLAGS} $< -o $@
 
 SRC = \
-	timers.c \
 	blowfish.c \
 	buffer.c \
 	charset.c \
@@ -68,6 +67,7 @@ SRC = \
 	syntax.c \
 	tag.c \
 	term.c \
+	timers.c \
 	ui.c \
 	undo.c \
 	window.c \
@@ -138,8 +138,6 @@ $(SYMS)  : vim.h globals.h keymap.h macros.h ascii.h term.h os_amiga.h structs.h
 	delete $(SYMS)
 
 ###########################################################################
-
-o/timers.o:	timers.c  $(SYMS)
 
 o/blowfish.o:	blowfish.c  $(SYMS)
 
@@ -229,6 +227,8 @@ o/tag.o:	tag.c  $(SYMS)
 o/term.o:	term.c  $(SYMS) term.h
 
 o/termlib.o:	termlib.c $(SYMS)
+
+o/timers.o:	timers.c  $(SYMS)
 
 o/ui.o: ui.c	$(SYMS)
 

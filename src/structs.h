@@ -2543,7 +2543,7 @@ typedef struct {
 
 #ifdef FEAT_TIMERS
 /*
- * Used for async settimeout/interval.
+ * Used for +timers settimeout/interval.
  */
 struct timeout_T {
     int id;                     /* timeout/interval id */

@@ -525,7 +525,6 @@ INCL =	vim.h os_win32.h ascii.h feature.h globals.h keymap.h macros.h \
 	$(NBDEBUG_INCL)
 
 OBJ = \
-	$(OUTDIR)\async.obj \
 	$(OUTDIR)\blowfish.obj \
 	$(OUTDIR)\buffer.obj \
 	$(OUTDIR)\charset.obj \
@@ -570,6 +569,7 @@ OBJ = \
 	$(OUTDIR)\syntax.obj \
 	$(OUTDIR)\tag.obj \
 	$(OUTDIR)\term.obj \
+	$(OUTDIR)\timers.obj \
 	$(OUTDIR)\ui.obj \
 	$(OUTDIR)\undo.obj \
 	$(OUTDIR)\window.obj \
@@ -1056,8 +1056,6 @@ testclean:
 !ENDIF
 	$(CC) $(CFLAGS) $<
 
-$(OUTDIR)/async.obj:	$(OUTDIR) timers.c  $(INCL)
-
 $(OUTDIR)/blowfish.obj:	$(OUTDIR) blowfish.c  $(INCL)
 
 $(OUTDIR)/buffer.obj:	$(OUTDIR) buffer.c  $(INCL)
@@ -1194,6 +1192,8 @@ $(OUTDIR)/syntax.obj:	$(OUTDIR) syntax.c  $(INCL)
 $(OUTDIR)/tag.obj:	$(OUTDIR) tag.c  $(INCL)
 
 $(OUTDIR)/term.obj:	$(OUTDIR) term.c  $(INCL)
+
+$(OUTDIR)/timers.obj:	$(OUTDIR) timers.c  $(INCL)
 
 $(OUTDIR)/ui.obj:	$(OUTDIR) ui.c  $(INCL)
 
