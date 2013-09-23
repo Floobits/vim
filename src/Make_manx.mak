@@ -34,7 +34,7 @@ SHELL = csh
 REN = $(SHELL) -c mv -f
 DEL = $(SHELL) -c rm -f
 
-SRC =	async.c \
+SRC =	timers.c \
 	blowfish.c \
 	buffer.c \
 	charset.c \
@@ -83,7 +83,7 @@ SRC =	async.c \
 
 INCL = vim.h feature.h keymap.h macros.h ascii.h term.h structs.h os_amiga.h
 
-OBJ =	obj/async.o \
+OBJ =	obj/timers.o \
 	obj/blowfish.o \
 	obj/buffer.o \
 	obj/charset.o \
@@ -221,8 +221,8 @@ CCNOSYM = $(CC) $(CFLAGS) -o
 
 $(OBJ): $(SYMS)
 
-obj/async.o:	async.c
-	$(CCSYM) $@ async.c
+obj/timers.o:	timers.c
+	$(CCSYM) $@ timers.c
 
 obj/blowfish.o:	blowfish.c
 	$(CCSYM) $@ blowfish.c

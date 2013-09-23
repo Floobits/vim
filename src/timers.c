@@ -1,6 +1,6 @@
 #include "vim.h"
 
-#ifdef FEAT_ASYNC
+#ifdef FEAT_TIMERS
 
 /*
  * Return monotonic time, if available. Fall back to gettimeofday otherwise.

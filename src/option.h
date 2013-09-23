@@ -795,7 +795,7 @@ EXTERN char_u	*p_titlestring;	/* 'titlestring' */
 #ifdef FEAT_INS_EXPAND
 EXTERN char_u	*p_tsr;		/* 'thesaurus' */
 #endif
-#ifdef FEAT_ASYNC
+#ifdef FEAT_TIMERS
 EXTERN long	p_tt;		/* 'ticktime' */
 #endif
 EXTERN int	p_ttimeout;	/* 'ttimeout' */

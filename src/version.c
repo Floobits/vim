@@ -77,7 +77,7 @@ static char *(features[]) =
 #else
 	"-arabic",
 #endif
-#ifdef FEAT_ASYNC
+#ifdef FEAT_TIMERS
 	"+async",
 #else
 	"-async",

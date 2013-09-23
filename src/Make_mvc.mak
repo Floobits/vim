@@ -1056,7 +1056,7 @@ testclean:
 !ENDIF
 	$(CC) $(CFLAGS) $<
 
-$(OUTDIR)/async.obj:	$(OUTDIR) async.c  $(INCL)
+$(OUTDIR)/async.obj:	$(OUTDIR) timers.c  $(INCL)
 
 $(OUTDIR)/blowfish.obj:	$(OUTDIR) blowfish.c  $(INCL)
 

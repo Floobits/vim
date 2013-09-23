@@ -328,7 +328,7 @@ GvimExt/gvimext.dll: GvimExt/gvimext.cpp GvimExt/gvimext.rc GvimExt/gvimext.h
 
 # Begin Source File
 
-SOURCE=.\async.c
+SOURCE=.\timers.c
 # End Source File
 # Begin Source File
 

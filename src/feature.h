@@ -471,7 +471,7 @@
  */
 #if defined(FEAT_NORMAL) && defined(MSWIN) || defined(MACOS_X) || \
 	defined(HAVE_GETTIMEOFDAY) && defined(HAVE_SYS_TIME_H)
-# define FEAT_ASYNC
+# define FEAT_TIMERS
 #endif
 
 /*

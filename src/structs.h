@@ -2541,7 +2541,7 @@ typedef struct {
   char_u   buffer[64];
 } context_sha256_T;
 
-#ifdef FEAT_ASYNC
+#ifdef FEAT_TIMERS
 /*
  * Used for async settimeout/interval.
  */
