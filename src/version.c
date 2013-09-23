@@ -77,11 +77,6 @@ static char *(features[]) =
 #else
 	"-arabic",
 #endif
-#ifdef FEAT_TIMERS
-	"+async",
-#else
-	"-async",
-#endif
 #ifdef FEAT_AUTOCMD
 	"+autocmd",
 #else
@@ -621,6 +616,11 @@ static char *(features[]) =
 	"+textobjects",
 #else
 	"-textobjects",
+#endif
+#ifdef FEAT_TIMERS
+	"+timers",
+#else
+	"-timers",
 #endif
 #ifdef FEAT_TITLE
 	"+title",
