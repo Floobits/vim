@@ -5151,24 +5151,7 @@ RealWaitForChar(fd, msec, check_for_gpm)
 	}
 # endif
 # ifdef FEAT_TIMERS
-	call_timeouts();
-	/* limit towait to p_tt at greatest */
-
-	// if there is not a timer, change towait so that it will get called
-	if (timeouts != NULL && msec !=0)
-	{
-		now = get_monotonic_time();
-		towait = timeouts->tm - now;
-		
-		/* don't accidentally wait forever (this should never happen) */
-		/* don't wake up every 1 ms ... limit to p_tt */
-		if (towait < 0 || towait < p_tt)
-			towait = p_tt;
-
-		/* don't overshoot the wait time */
-		if (msec > 0 && towait > msec)
-			towait = msec;
-	}
+	towait = call_timeouts(msec);
 # endif
 	fds[0].fd = fd;
 	fds[0].events = POLLIN;
@@ -5298,24 +5281,7 @@ RealWaitForChar(fd, msec, check_for_gpm)
 	}
 # endif
 # ifdef FEAT_TIMERS
-	call_timeouts();
-	/* limit towait to p_tt at greatest */
-
-	// if there is not a timer, change towait so that it will get called
-	if (timeouts != NULL && msec !=0)
-	{
-		now = get_monotonic_time();
-		towait = timeouts->tm - now;
-		
-		/* don't accidentally wait forever (this should never happen) */
-		/* don't wake up every 1 ms ... limit to p_tt */
-		if (towait < 0 || towait < p_tt)
-			towait = p_tt;
-
-		/* don't overshoot the wait time */
-		if (msec > 0 && towait > msec)
-			towait = msec;
-	}
+	towait = call_timeouts(msec);
 # endif
 # ifdef __EMX__
 	/* don't check for incoming chars if not in raw mode, because select()

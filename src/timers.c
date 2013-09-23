@@ -59,33 +59,57 @@ insert_timeout(to)
 
 /*
  * Execute timeouts that are due.
- * This is called every ticktime milliseconds by low-level input functions.
+ * Return the amount of time before call_timeouts() should be run again.
  */
-	void
-call_timeouts(void)
+	long
+call_timeouts(max_to_wait)
+	long max_to_wait;
 {
-	unsigned long long tm = get_monotonic_time();
+	unsigned long long now = get_monotonic_time();
+	unsigned long long towait = p_tt;
 	timeout_T *tmp;
 	int retval;
 
-	while (timeouts != NULL && timeouts->tm < tm)
+	while (timeouts != NULL && timeouts->tm < now)
 	{
 		retval = do_cmdline_cmd(timeouts->cmd);
 		tmp = timeouts;
 		timeouts = timeouts->next;
-		if (tmp->interval == -1 || retval == FAIL || did_throw || did_emsg))
+		if (tmp->interval == -1 || retval == FAIL || did_throw || did_emsg)
 		{	
 			if (got_int)
-				EMSG(_("E693: Can only compare Funcref with Funcref"))
+				EMSG(_("E693: Can only compare Funcref with Funcref"));
 			free(tmp->cmd);
 			free(tmp);
 		} 
 		else
 		{
-			tmp->tm = tm + tmp->interval;
+			tmp->tm = now + tmp->interval;
 			insert_timeout(tmp);
 		}
 	}
+
+	/* if there is not a timer, change towait so that it will get called */
+	if (timeouts != NULL && max_to_wait != 0)
+	{
+		now = get_monotonic_time();
+		if (now > timeouts->tm)
+			return p_tt;
+
+		towait = timeouts->tm - now;
+
+		/* don't wake up every 1 ms ... limit to p_tt */
+		if (towait < p_tt)
+			towait = p_tt;
+
+		/* don't overshoot the wait time */
+		if (max_to_wait > 0 && towait > max_to_wait)
+			towait = max_to_wait;
+
+        return towait;
+	}
+
+	return max_to_wait;
 }
 
 #endif

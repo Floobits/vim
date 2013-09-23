@@ -2862,8 +2862,9 @@ gui_insert_lines(row, count)
 gui_wait_for_chars(wtime)
     long    wtime;
 {
-    int	    retval;
-    int i = 0;
+    int 	retval;
+    long	i = 0;
+    long	time_to_wait;
 
 #ifdef FEAT_MENU
     /*
@@ -2888,7 +2889,19 @@ gui_wait_for_chars(wtime)
 	/* Blink when waiting for a character.	Probably only does something
 	 * for showmatch() */
 	gui_mch_start_blink();
-	retval = gui_mch_wait_for_chars(wtime);
+    while (i < wtime) {
+#ifdef FEAT_TIMERS
+		time_to_wait = call_timeouts(wtime - i);
+		i += time_to_wait;
+		retval = gui_mch_wait_for_chars(time_to_wait);
+#else
+		retval = gui_mch_wait_for_chars(wtime);
+		i += wtime;
+#endif
+		if (retval == OK) {
+			break;
+		}
+    }
 	gui_mch_stop_blink();
 	return retval;
     }
@@ -2900,12 +2913,11 @@ gui_wait_for_chars(wtime)
 
     retval = FAIL;
 
-    i = 0;
     while (i < p_ut) {
 #ifdef FEAT_TIMERS
-		retval = gui_mch_wait_for_chars(p_tt);
-		call_timeouts();
-		i += p_tt;
+		time_to_wait = call_timeouts(p_ut - i);
+		i += time_to_wait;
+		retval = gui_mch_wait_for_chars(time_to_wait);
 #else
 		retval = gui_mch_wait_for_chars(p_ut);
 		i += p_ut;
