@@ -16628,6 +16628,18 @@ set_timeout(argvars, rettv, interval)
     timeout_T *to = malloc(sizeof(timeout_T));
     to->id = timeout_id++;
     to->tm = get_monotonic_time() + i;
+    if (sourcing_name) 
+    {
+        to->sourcing_name = (char_u*)strdup((char *)sourcing_name);
+        to->sourcing_lnum = sourcing_lnum;
+    } 
+    else
+    {
+        to->sourcing_name = (char_u*)strdup("cmdline");
+        to->sourcing_lnum = 0;
+    }
+
+
     rettv->vval.v_number = to->id;
     to->cmd = (char_u*)strdup((char*)cmd);
     to->interval = interval ? i : -1;

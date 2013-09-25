@@ -2550,6 +2550,8 @@ struct timeout_T {
     int interval;               /* interval period if interval, otherwise -1 */
     unsigned long long tm;           /* time to fire (epoch milliseconds) */
     char_u *cmd;                /* vim command to run */
+    char_u *sourcing_name;
+    linenr_T sourcing_lnum;
     struct timeout_T *next;     /* pointer to next timeout in linked list */
 };
 typedef struct timeout_T timeout_T;
