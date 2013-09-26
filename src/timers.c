@@ -77,9 +77,21 @@ call_timeouts(max_to_wait)
 		timeouts = timeouts->next;
 		if (tmp->interval == -1 || retval == FAIL || did_throw || did_emsg)
 		{	
-			if (got_int)
-				EMSG(_("E881: An interval was canceled because of an interrupt."));
+			if (got_int) 
+			{
+				if (tmp->sourcing_lnum) 
+				{
+					EMSG(_("E881: An interval was canceled because of an interrupt"));
+					EMSG3(_("%s:%s"), tmp->sourcing_name, tmp->sourcing_lnum);
+				} 
+				else 
+				{
+					EMSG(_("E881: An interval was canceled because of an interrupt"));
+					EMSG2(_("%s"), tmp->sourcing_name);
+				}
+			}
 			free(tmp->cmd);
+			free(tmp->sourcing_name);
 			free(tmp);
 		} 
 		else
