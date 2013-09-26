@@ -42,7 +42,7 @@ insert_timeout(to)
 			if (prev)
 			{
 				prev->next = to;
-			} 
+			}
 			else 
 			{
 				timeouts = to;
@@ -57,6 +57,8 @@ insert_timeout(to)
 	to->next = NULL;
 }
 
+static int calling_timeouts = 0;
+
 /*
  * Execute timeouts that are due.
  * Return the amount of time before call_timeouts() should be run again.
@@ -69,6 +71,12 @@ call_timeouts(max_to_wait)
 	unsigned long long towait = p_tt;
 	timeout_T *tmp;
 	int retval;
+
+	if (calling_timeouts) {
+		return towait;
+	}
+
+	calling_timeouts = TRUE;
 
 	while (timeouts != NULL && timeouts->tm < now)
 	{
@@ -100,6 +108,8 @@ call_timeouts(max_to_wait)
 			insert_timeout(tmp);
 		}
 	}
+
+	calling_timeouts = FALSE;
 
 	/* if there is not a timer, change towait so that it will get called */
 	if (timeouts != NULL && max_to_wait != 0)
