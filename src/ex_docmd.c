@@ -470,6 +470,12 @@ static void	ex_folddo __ARGS((exarg_T *eap));
 # define ex_nbstart		ex_ni
 #endif
 
+#ifdef FEAT_TIMERS
+static void	ex_timers __ARGS((exarg_T *eap));
+#else
+# define ex_timers		ex_ni
+#endif
+
 #ifndef FEAT_EVAL
 # define ex_debug		ex_ni
 # define ex_breakadd		ex_ni
@@ -11506,5 +11512,55 @@ ex_folddo(eap)
     /* Execute the command on the marked lines. */
     global_exe(eap->arg);
     ml_clearmarked();	   /* clear rest of the marks */
+}
+#endif
+
+#ifdef FEAT_TIMERS
+
+	static void
+ex_timers(eap)
+	exarg_T *eap;
+{
+	int		msg_save = msg_scroll;
+	timeout_T *tm;
+	char num_str[20];
+	unsigned long long now = get_monotonic_time();
+
+	msg_start();
+	MSG_PUTS_TITLE(_("\n--- Timers ---\n"));
+	msg_puts((char_u *)"ID        Next (ms)     Interval (ms)   Source                             Command\n");
+	for (tm = timeouts; tm != NULL; tm = tm->next)
+	{
+		sprintf(num_str, "%i", tm->id);
+		msg_puts((char_u *)num_str);
+		msg_col = 10;
+
+		sprintf(num_str, "%llu", tm->tm - now);
+		msg_puts((char_u *)num_str);
+		msg_col = 24;
+
+		if (tm->interval != -1) {
+			sprintf(num_str, "%i", tm->interval);
+			msg_puts((char_u *)num_str);
+		}
+		msg_col = 40;
+
+		msg_puts_long_attr(tm->sourcing_name, 30);
+		if (tm->sourcing_lnum)
+		{
+			sprintf(num_str, ":%li", tm->sourcing_lnum);
+			msg_puts_long_attr((char_u *)num_str, 5);
+		}
+
+		msg_col = 75;
+		MSG_PUTS_TITLE(tm->cmd);
+		msg_putchar('\n');
+
+		msg_col = 0;
+	}
+
+	msg_clr_eos();
+	msg_end();
+	msg_scroll = msg_save;
 }
 #endif
