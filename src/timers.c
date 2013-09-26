@@ -3,6 +3,11 @@
 #ifdef FEAT_TIMERS
 
 /*
+ * Avoid recursive calls to call_timeouts
+ */
+static int calling_timeouts = FALSE;
+
+/*
  * Return monotonic time, if available. Fall back to gettimeofday otherwise.
  */
 	unsigned long long
@@ -56,8 +61,6 @@ insert_timeout(to)
 	prev->next = to;
 	to->next = NULL;
 }
-
-static int calling_timeouts = 0;
 
 /*
  * Execute timeouts that are due.
