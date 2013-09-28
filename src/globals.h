@@ -1627,7 +1627,9 @@ EXTERN char *ignoredp;
 # include "arabic.h"
 #endif
 
+#ifdef FEAT_TIMERS
 /*
  * For keeping track of timeouts.
  */
 EXTERN timeout_T *timeouts INIT(= NULL);
+#endif
