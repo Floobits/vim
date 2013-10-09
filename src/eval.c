@@ -16628,6 +16628,7 @@ set_timeout(argvars, rettv, interval)
     timeout_T *to = malloc(sizeof(timeout_T));
     to->id = timeout_id++;
     to->tm = get_monotonic_time() + i;
+    /* buf->b_fname */
     if (sourcing_name)
     {
         to->sourcing_name = (char_u*)strdup((char *)sourcing_name);
@@ -22455,7 +22456,13 @@ script_autoload(name, reload)
     char_u	*scriptname, *tofree;
     int		ret = FALSE;
     int		i;
-
+    unsigned long long then = get_monotonic_time();
+    char_u buf [100];
+    // sprintf(buf, "script_autoload %s %d %llu\n", name, reload, then);
+    // MSG(buf);
+        //     {
+        //     EMSG3("Warning, took a forevers: %s, %llu", timeouts->cmd, then-now);
+        // }
     /* Return quickly when autoload disabled. */
     if (no_autoload)
 	return FALSE;

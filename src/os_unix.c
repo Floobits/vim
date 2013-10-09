@@ -393,7 +393,8 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
     if (wtime >= 0)
     {
 	while (WaitForChar(wtime) == 0)		/* no character available */
-	{
+	{	
+		call_timeouts(0);
 	    if (!do_resize)	/* return if not interrupted by resize */
 		return 0;
 	    handle_resize();
@@ -410,7 +411,24 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
 	 * flush all the swap files to disk.
 	 * Also done when interrupted by SIGWINCH.
 	 */
-	if (WaitForChar(p_ut) == 0)
+
+	// if (WaitForChar(p_ut) == 0)
+	 int retval;
+#ifdef FEAT_ASYNC
+	int t = 0;
+	while (t < p_ut) {
+		retval = WaitForChar(p_tt);
+		call_timeouts(0);
+		t += p_tt;
+		if (retval == OK) {
+			break;
+		}
+	}
+#else
+	retval = WaitForChar(p_ut);
+#endif
+
+	if (retval == FAIL)
 	{
 #ifdef FEAT_AUTOCMD
 	    if (trigger_cursorhold() && maxlen >= 3
@@ -440,12 +458,27 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
 	 * We want to be interrupted by the winch signal
 	 * or by an event on the monitored file descriptors.
 	 */
+	#ifdef FEAT_ASYNC
+	while (TRUE) {
+		retval = WaitForChar(p_tt);
+		call_timeouts(0);
+		if (retval == OK) {
+			break;
+		}
+	    if (do_resize) {
+    	    /* interrupted by SIGWINCH signal */
+    		handle_resize();
+    	    return 0;
+	    }
+	}
+	#else
 	if (WaitForChar(-1L) == 0)
 	{
 	    if (do_resize)	    /* interrupted by SIGWINCH signal */
 		handle_resize();
 	    return 0;
 	}
+	#endif
 #endif
 
 	/* If input was put directly in typeahead buffer bail out here. */
@@ -5068,7 +5101,7 @@ RealWaitForChar(fd, msec, check_for_gpm)
 #ifdef FEAT_NETBEANS_INTG
     int		nb_fd = netbeans_filedesc();
 #endif
-#if defined(FEAT_XCLIPBOARD) || defined(USE_XSMP) || defined(FEAT_MZSCHEME) || defined(FEAT_TIMERS)
+#if defined(FEAT_XCLIPBOARD) || defined(USE_XSMP) || defined(FEAT_MZSCHEME)// || defined(FEAT_TIMERS)
     static int	busy = FALSE;
 
 #ifdef FEAT_TIMERS
@@ -5151,7 +5184,7 @@ RealWaitForChar(fd, msec, check_for_gpm)
 	}
 # endif
 # ifdef FEAT_TIMERS
-	towait = call_timeouts(msec);
+	// towait = call_timeouts(msec);
 # endif
 	fds[0].fd = fd;
 	fds[0].events = POLLIN;
@@ -5281,7 +5314,7 @@ RealWaitForChar(fd, msec, check_for_gpm)
 	}
 # endif
 # ifdef FEAT_TIMERS
-	towait = call_timeouts(msec);
+	// towait = call_timeouts(msec);
 # endif
 # ifdef __EMX__
 	/* don't check for incoming chars if not in raw mode, because select()
@@ -5395,10 +5428,10 @@ select_eintr:
 	    /* loop if MzThreads must be scheduled and timeout occurred */
 	    finished = FALSE;
 # endif
-# ifdef FEAT_TIMERS
-	if (ret == 0 && msec > p_tt)
-	    finished = FALSE;
-# endif
+// # ifdef FEAT_TIMERS
+// 	if (ret == 0 && msec > p_tt)
+// 	    finished = FALSE;
+// # endif
 
 # ifdef FEAT_SNIFF
 	if (ret < 0 )
