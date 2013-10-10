@@ -86,11 +86,6 @@ call_timeouts(max_to_wait)
 	while (timeouts != NULL && timeouts->tm < now)
 	{
 		retval = do_cmdline_cmd(timeouts->cmd);
-		then = get_monotonic_time();
-		if (then - now > 5000)
-		{
-			EMSG3("Warning, took a forevers: %s, %llu", timeouts->cmd, then - now);
-		}
 		tmp = timeouts;
 		timeouts = timeouts->next;
 		if (tmp->interval == -1 || retval == FAIL || did_throw || did_emsg)

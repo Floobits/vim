@@ -379,7 +379,11 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
     int		tb_change_cnt;
 {
     int		len;
-
+	int 	retval;
+#ifdef FEAT_ASYNC	
+	int 	t = 0;
+	long 	next_timeout = p_ut;
+#endif 
 #ifdef FEAT_NETBEANS_INTG
     /* Process the queued netbeans messages. */
     netbeans_parse_messages();
@@ -411,18 +415,16 @@ mch_inchar(buf, maxlen, wtime, tb_change_cnt)
 	 * flush all the swap files to disk.
 	 * Also done when interrupted by SIGWINCH.
 	 */
-
-	// if (WaitForChar(p_ut) == 0)
-	 int retval;
 #ifdef FEAT_ASYNC
-	int t = 0;
-	while (t < p_ut) {
-		retval = WaitForChar(p_tt);
-		call_timeouts(0);
-		t += p_tt;
-		if (retval == OK) {
+	while (t < p_ut)
+	{
+		next_timeout = call_timeouts(next_timeout);
+		retval = WaitForChar(next_timeout);
+		if (retval == OK)
+		{
 			break;
 		}
+		t += next_timeout;
 	}
 #else
 	retval = WaitForChar(p_ut);
