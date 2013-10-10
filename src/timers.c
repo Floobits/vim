@@ -5,7 +5,7 @@
 /*
  * Avoid recursive calls to call_timeouts
  */
-// calling_timeouts = FALSE;
+int calling_timeouts = FALSE;
 
 /*
  * Return monotonic time, if available. Fall back to gettimeofday otherwise.
