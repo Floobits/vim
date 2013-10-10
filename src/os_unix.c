@@ -5365,6 +5365,10 @@ select_eintr:
 	 * required. Should not be used */
 	ret = 0;
 # else
+	if (calling_timeouts) {
+		unsigned long long 	tm = mch_monotonic_time();
+		printf("calling select in timeouts %llu\n\n\n\n", tm);
+	}
 	ret = select(maxfd + 1, &rfds, NULL, &efds, tvp);
 # endif
 # ifdef EINTR
