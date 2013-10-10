@@ -78,7 +78,7 @@ call_timeouts(max_to_wait)
 	int retval;
 
 	if (calling_timeouts) {
-		return towait;
+		return max_to_wait;
 	}
 
 	calling_timeouts = TRUE;
@@ -92,7 +92,7 @@ call_timeouts(max_to_wait)
 		{	
 			if (got_int) 
 			{
-				if (tmp->sourcing_lnum) 
+				if (tmp->sourcing_lnum)
 				{
 					EMSG(_("E881: An interval was canceled because of an interrupt"));
 					EMSG3(_("%s:%s"), tmp->sourcing_name, tmp->sourcing_lnum);
