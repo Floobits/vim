@@ -76,7 +76,7 @@ call_timeouts(max_to_wait)
 	int retval;
 
 	if (calling_timeouts) {
-		return towait;
+		return max_to_wait;
 	}
 
 	calling_timeouts = TRUE;
