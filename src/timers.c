@@ -5,7 +5,7 @@
 /*
  * Avoid recursive calls to call_timeouts
  */
-int calling_timeouts = FALSE;
+static int calling_timeouts = FALSE;
 
 /*
  * Return monotonic time, if available. Fall back to gettimeofday otherwise.
@@ -36,10 +36,12 @@ insert_timeout(to)
 	timeout_T *cur = timeouts;
 	timeout_T *prev = NULL;
 
-	if (timeouts == NULL) {
+	if (timeouts == NULL)
+	{
 		timeouts = to;
 		return;
 	}
+
 	while (cur != NULL) 
 	{
 		if (cur->tm > to->tm)
@@ -75,7 +77,8 @@ call_timeouts(max_to_wait)
 	timeout_T *tmp;
 	int retval;
 
-	if (calling_timeouts) {
+	if (calling_timeouts)
+	{
 		return max_to_wait;
 	}
 
