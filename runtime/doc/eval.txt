@@ -1939,8 +1939,10 @@ setreg( {n}, {v}[, {opt}])	Number	set register to value and type
 settabvar( {nr}, {varname}, {val})	set {varname} in tab page {nr} to {val}
 settabwinvar( {tabnr}, {winnr}, {varname}, {val})    set {varname} in window
 					{winnr} in tab page {tabnr} to {val}
-settimeout( {nr}, {string})	Number	evaluate the expression {string} after
+settimeout( {nr}, {string})	Number	execute the command {string} after
 					{nr} milliseconds
+setinterval( {nr}, {string})	Number	execute the command {string} after
+					{nr} milliseconds every {nr} milliseconds
 setwinvar( {nr}, {varname}, {val})	set {varname} in window {nr} to {val}
 sha256( {string})		String	SHA256 checksum of {string}
 shellescape( {string} [, {special}])
@@ -5202,9 +5204,9 @@ setcmdpos({pos})					*setcmdpos()*
 		line.
 
 setinterval({nr}, {string})				*setinterval()* *E881*
-		Immediately returns an interval id and evaluate the expression,
+		Immediately returns an interval id and execute the command,
 		{string}, every {nr} milliseconds. Intervals do not pile up.
-		The timer's resolution defaults to 100ms and can be changed by
+		The timer's resolution defaults to 20ms and can be changed by
 		setting |ticktime|.  Intervals can be canceled by calling
 		|canceltimeout({interval_id})|.
 		NOTE: Vim is single-threaded and all expressions are run
@@ -5388,7 +5390,7 @@ settabwinvar({tabnr}, {winnr}, {varname}, {val})	*settabwinvar()*
 <		This function is not available in the |sandbox|.
 
 settimeout({nr}, {string})				*settimeout()*
-		Immediately returns an interval id and evaluate the expression,
+		Immediately returns an interval id and evaluate the command,
 		{string}, once after {nr} milliseconds. The timer's
 		resolution defaults to 100ms and can be changed by setting
 		|ticktime|.  Timeouts can be canceled by calling

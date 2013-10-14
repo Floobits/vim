@@ -7254,7 +7254,7 @@ A jump table for the options with a short description can be found at |Q_op|.
 	Backticks cannot be used in this option for security reasons.
 
 						*'ticktime'* *'tt'*
-'ticktime' 'tt'		number	(default 100)
+'ticktime' 'tt'		number	(default 20)
 			global
 			{not in Vi}
 	This is the resolution for all timers set with |setinterval()| and
