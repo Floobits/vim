@@ -892,7 +892,7 @@ catch_sigpwr SIGDEFARG(sigarg)
 }
 #endif
 
-#ifdef MCH_MONOTONIC_TIME
+#if !defined(MACOS_X_UNIX)
 	unsigned long long
 mch_monotonic_time(void)
 {
