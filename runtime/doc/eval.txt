@@ -5399,7 +5399,7 @@ settimeout({nr}, {string})				*settimeout()*
 		Also see |setinterval()| and |canceltimeout()|.
 		{only available when compiled with the |+timers| feature}
 		Examples: >
-			:call settimeout(1000, "call echo(2)")
+			:call settimeout(1000, "echo(2)")
 <		2
 
 setwinvar({nr}, {varname}, {val})			*setwinvar()*
@@ -6525,7 +6525,7 @@ termresponse		Compiled with support for |t_RV| and |v:termresponse|.
 textobjects		Compiled with support for |text-objects|.
 tgetent			Compiled with tgetent support, able to use a termcap
 			or terminfo file.
-timers			Compiled with support for timer funtions.
+timers			Compiled with support for timer functions.
 title			Compiled with window title support |'title'|.
 toolbar			Compiled with support for |gui-toolbar|.
 unix			Unix version of Vim.

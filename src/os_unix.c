@@ -5071,10 +5071,6 @@ RealWaitForChar(fd, msec, check_for_gpm)
 #if defined(FEAT_XCLIPBOARD) || defined(USE_XSMP) || defined(FEAT_MZSCHEME) \
 						    || defined(FEAT_TIMERS)
     static int	busy = FALSE;
-
-# ifdef FEAT_TIMERS
-    unsigned long long now;
-# endif
     /* May retry getting characters after an event was handled. */
 # define MAY_LOOP
 

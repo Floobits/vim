@@ -11526,6 +11526,7 @@ ex_timers(eap)
     char		num_str[20];
     unsigned long long	now = get_monotonic_time();
 
+    (void)eap;
     msg_start();
     MSG_PUTS_TITLE(_("\n--- Timers ---\n"));
     msg_puts((char_u *)"ID        Next (ms)     Interval (ms)   Source                             Command\n");
