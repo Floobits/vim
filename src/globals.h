@@ -1632,4 +1632,8 @@ EXTERN char *ignoredp;
  * For keeping track of timeouts.
  */
 EXTERN timeout_T *timeouts INIT(= NULL);
+/*
+ * Avoid trouble from recursive and self referential calls to call_timeouts
+ */
+EXTERN int calling_timeouts INIT(= NULL);
 #endif
