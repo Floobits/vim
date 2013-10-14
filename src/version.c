@@ -617,6 +617,11 @@ static char *(features[]) =
 #else
 	"-textobjects",
 #endif
+#ifdef FEAT_TIMERS
+	"+timers",
+#else
+	"-timers",
+#endif
 #ifdef FEAT_TITLE
 	"+title",
 #else

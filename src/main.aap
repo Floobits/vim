@@ -334,6 +334,7 @@ Source =
         syntax.c
         tag.c
         term.c
+        timers.c
         ui.c
         undo.c
         window.c

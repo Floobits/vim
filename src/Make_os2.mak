@@ -79,6 +79,7 @@ OBJ = \
 	syntax.o \
 	tag.o \
 	term.o \
+	timers.o \
 	ui.o \
 	undo.o \
 	window.o \

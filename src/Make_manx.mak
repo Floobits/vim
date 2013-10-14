@@ -75,6 +75,7 @@ SRC =	blowfish.c \
 	syntax.c \
 	tag.c \
 	term.c \
+	timers.c \
 	ui.c \
 	undo.c \
 	window.c \
@@ -123,6 +124,7 @@ OBJ =	obj/blowfish.o \
 	obj/syntax.o \
 	obj/tag.o \
 	obj/term.o \
+	obj/timers.o \
 	obj/ui.o \
 	obj/undo.o \
 	obj/window.o \
@@ -170,6 +172,7 @@ PRO =	proto/blowfish.pro \
 	proto/tag.pro \
 	proto/term.pro \
 	proto/termlib.pro \
+	proto/timers.pro \
 	proto/ui.pro \
 	proto/undo.pro \
 	proto/window.pro
@@ -347,6 +350,9 @@ obj/term.o:	term.c term.h
 
 obj/termlib.o:	termlib.c
 	$(CCSYM) $@ termlib.c
+
+obj/timers.o:	timers.c
+	$(CCSYM) $@ timers.c
 
 obj/ui.o:	ui.c
 	$(CCSYM) $@ ui.c

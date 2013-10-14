@@ -1544,6 +1544,7 @@ tag	      command	      action ~
 |:tearoff|	:te[aroff]	tear-off a menu
 |:tfirst|	:tf[irst]	jump to first matching tag
 |:throw|	:th[row]	throw an exception
+|:timers|	:ti[mers]	show all pending timers
 |:tjump|	:tj[ump]	like ":tselect", but jump directly when there
 				is only one match
 |:tlast|	:tl[ast]	jump to last matching tag

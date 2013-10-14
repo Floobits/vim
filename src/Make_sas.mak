@@ -177,6 +177,7 @@ OBJ = \
 	syntax.o \
 	tag.o \
 	term.o \
+	timers.o \
 	ui.o \
 	undo.o \
 	window.o \
@@ -225,6 +226,7 @@ PRO = \
 	proto/tag.pro \
 	proto/term.pro \
 	proto/termlib.pro \
+	proto/timers.pro \
 	proto/ui.pro \
 	proto/undo.pro \
 	proto/window.pro
@@ -368,6 +370,8 @@ term.o:			term.c
 proto/term.pro:		term.c
 termlib.o:		termlib.c
 proto/termlib.pro:	termlib.c
+timers.o:		timers.c
+proto/timers.pro:	timers.c
 ui.o:			ui.c
 proto/ui.pro:		ui.c
 undo.o:			undo.c

@@ -67,6 +67,7 @@ SRC = \
 	syntax.c \
 	tag.c \
 	term.c \
+	timers.c \
 	ui.c \
 	undo.c \
 	window.c \
@@ -113,6 +114,7 @@ OBJ =	o/blowfish.o \
 	o/syntax.o \
 	o/tag.o \
 	o/term.o \
+	o/timers.o \
 	o/ui.o \
 	o/undo.o \
 	o/window.o \
@@ -225,6 +227,8 @@ o/tag.o:	tag.c  $(SYMS)
 o/term.o:	term.c  $(SYMS) term.h
 
 o/termlib.o:	termlib.c $(SYMS)
+
+o/timers.o:	timers.c  $(SYMS)
 
 o/ui.o: ui.c	$(SYMS)
 

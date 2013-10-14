@@ -1,4 +1,4 @@
-*eval.txt*	For Vim version 7.4.  Last change: 2013 Aug 24
+*eval.txt*	For Vim version 7.4.  Last change: 2013 Sep 10
 
 
 		  VIM REFERENCE MANUAL	  by Bram Moolenaar
@@ -1715,6 +1715,7 @@ byte2line( {byte})		Number	line number at byte count {byte}
 byteidx( {expr}, {nr})		Number	byte index of {nr}'th char in {expr}
 call( {func}, {arglist} [, {dict}])
 				any	call {func} with arguments {arglist}
+canceltimeout( {nr})		Number	cancel the timeout or interval
 ceil( {expr})			Float	round {expr} up
 changenr()			Number	current change number
 char2nr( {expr}[, {utf8}])	Number	ASCII/UTF8 value of first char in {expr}
@@ -1926,6 +1927,8 @@ server2client( {clientid}, {string})
 serverlist()			String	get a list of available servers
 setbufvar( {expr}, {varname}, {val})	set {varname} in buffer {expr} to {val}
 setcmdpos( {pos})		Number	set cursor position in command-line
+setinterval( {nr}, {string})	Number	evaluate the expression {string} every
+					{nr} milliseconds
 setline( {lnum}, {line})	Number	set line {lnum} to {line}
 setloclist( {nr}, {list}[, {action}])
 				Number	modify location list using {list}
@@ -1936,6 +1939,8 @@ setreg( {n}, {v}[, {opt}])	Number	set register to value and type
 settabvar( {nr}, {varname}, {val})	set {varname} in tab page {nr} to {val}
 settabwinvar( {tabnr}, {winnr}, {varname}, {val})    set {varname} in window
 					{winnr} in tab page {tabnr} to {val}
+settimeout( {nr}, {string})	Number	evaluate the expression {string} after
+					{nr} milliseconds
 setwinvar( {nr}, {varname}, {val})	set {varname} in window {nr} to {val}
 sha256( {string})		String	SHA256 checksum of {string}
 shellescape( {string} [, {special}])
@@ -2280,6 +2285,15 @@ call({func}, {arglist} [, {dict}])			*call()* *E699*
 		Returns the return value of the called function.
 		{dict} is for functions with the "dict" attribute.  It will be
 		used to set the local variable "self". |Dictionary-function|
+
+canceltimeout({nr})					*canceltimeout()*
+		Cancel the timeout or interval with id, {nr}, preventing it
+		from every firing.
+		Also see |settimeout()| and |setinterval()|.
+		{only available when compiled with the |+timers| feature}
+		Examples: >
+			let timeout_id = settimeout(5000, 'echo(2)')
+			echo canceltimeout(timeout_id)
 
 ceil({expr})							*ceil()*
 		Return the smallest integral value greater than or equal to
@@ -5187,6 +5201,23 @@ setcmdpos({pos})					*setcmdpos()*
 		Returns 0 when successful, 1 when not editing the command
 		line.
 
+setinterval({nr}, {string})				*setinterval()* *E881*
+		Immediately returns an interval id and evaluate the expression,
+		{string}, every {nr} milliseconds. Intervals do not pile up.
+		The timer's resolution defaults to 100ms and can be changed by
+		setting |ticktime|.  Intervals can be canceled by calling
+		|canceltimeout({interval_id})|.
+		NOTE: Vim is single-threaded and all expressions are run
+		within the main thread.  Therefore, expressions should return
+		control flow within a short amount of time.
+		Also see |settimeout()| and |canceltimeout()|.
+		{only available when compiled with the |+timers| feature}
+		Examples: >
+			:call setinterval(1000, "call echo(2)")
+<		2
+		2
+		2
+
 setline({lnum}, {text})					*setline()*
 		Set line {lnum} of the current buffer to {text}.  To insert
 		lines use |append()|.
@@ -5355,6 +5386,21 @@ settabwinvar({tabnr}, {winnr}, {varname}, {val})	*settabwinvar()*
 			:call settabwinvar(1, 1, "&list", 0)
 			:call settabwinvar(3, 2, "myvar", "foobar")
 <		This function is not available in the |sandbox|.
+
+settimeout({nr}, {string})				*settimeout()*
+		Immediately returns an interval id and evaluate the expression,
+		{string}, once after {nr} milliseconds. The timer's
+		resolution defaults to 100ms and can be changed by setting
+		|ticktime|.  Timeouts can be canceled by calling
+		|canceltimeout({interval_id})|.
+		NOTE: Vim is single-threaded and all expressions are run
+		within the main thread.  Therefore, expressions should return
+		control flow within a short amount of time.
+		Also see |setinterval()| and |canceltimeout()|.
+		{only available when compiled with the |+timers| feature}
+		Examples: >
+			:call settimeout(1000, "call echo(2)")
+<		2
 
 setwinvar({nr}, {varname}, {val})			*setwinvar()*
 		Like |settabwinvar()| for the current tab page.
@@ -6479,6 +6525,7 @@ termresponse		Compiled with support for |t_RV| and |v:termresponse|.
 textobjects		Compiled with support for |text-objects|.
 tgetent			Compiled with tgetent support, able to use a termcap
 			or terminfo file.
+timers			Compiled with support for timer funtions.
 title			Compiled with window title support |'title'|.
 toolbar			Compiled with support for |gui-toolbar|.
 unix			Unix version of Vim.

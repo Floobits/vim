@@ -91,6 +91,7 @@ EXE_dependencies = \
 	syntax.obj \
 	tag.obj \
 	term.obj \
+	timers.obj \
 	ui.obj \
 	undo.obj \
 	window.obj

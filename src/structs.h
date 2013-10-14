@@ -2540,3 +2540,19 @@ typedef struct {
   UINT32_T state[8];
   char_u   buffer[64];
 } context_sha256_T;
+
+#ifdef FEAT_TIMERS
+/*
+ * Used for +timers settimeout/interval.
+ */
+typedef struct timeout_S timeout_T;
+struct timeout_S {
+    int id;			/* timeout/interval id */
+    int interval;		/* interval period if interval, otherwise -1 */
+    unsigned long long tm;	/* time to fire (epoch milliseconds) */
+    char_u *cmd;		/* vim command to run */
+    char_u *sourcing_name;
+    linenr_T sourcing_lnum;
+    timeout_T *next;		/* pointer to next timeout in linked list */
+};
+#endif

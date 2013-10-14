@@ -253,6 +253,7 @@ LINK32_OBJS= \
 	"$(INTDIR)/syntax.obj" \
 	"$(INTDIR)/tag.obj" \
 	"$(INTDIR)/term.obj" \
+	"$(INTDIR)/timers.obj" \
 	"$(INTDIR)/ui.obj" \
 	"$(INTDIR)/undo.obj" \
 	"$(INTDIR)/version.obj" \
@@ -646,6 +647,10 @@ SOURCE=.\tag.c
 # Begin Source File
 
 SOURCE=.\term.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\timers.c
 # End Source File
 # Begin Source File
 

@@ -60,6 +60,7 @@ OBJ = \
 	obj/syntax.o \
 	obj/tag.o \
 	obj/term.o \
+	obj/timers.o \
 	obj/ui.o \
 	obj/undo.o \
 	obj/window.o \

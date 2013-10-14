@@ -289,6 +289,10 @@ void clip_mch_request_selection(VimClipboard *cbd);
 void clip_mch_set_selection(VimClipboard *cbd);
 #endif
 
+#ifdef FEAT_TIMERS
+# include "timers.pro"
+#endif
+
 #ifdef __BORLANDC__
 # define _PROTO_H
 #endif

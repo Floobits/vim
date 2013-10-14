@@ -892,6 +892,17 @@ catch_sigpwr SIGDEFARG(sigarg)
 }
 #endif
 
+#if !defined(MACOS_X_UNIX)
+# define MCH_MONOTONIC_TIME
+	unsigned long long
+mch_monotonic_time(void)
+{
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
+}
+#endif
+
 #ifdef SET_SIG_ALARM
 /*
  * signal function for alarm().
@@ -5057,9 +5068,13 @@ RealWaitForChar(fd, msec, check_for_gpm)
 #ifdef FEAT_NETBEANS_INTG
     int		nb_fd = netbeans_filedesc();
 #endif
-#if defined(FEAT_XCLIPBOARD) || defined(USE_XSMP) || defined(FEAT_MZSCHEME)
+#if defined(FEAT_XCLIPBOARD) || defined(USE_XSMP) || defined(FEAT_MZSCHEME) \
+						    || defined(FEAT_TIMERS)
     static int	busy = FALSE;
 
+# ifdef FEAT_TIMERS
+    unsigned long long now;
+# endif
     /* May retry getting characters after an event was handled. */
 # define MAY_LOOP
 
@@ -5072,18 +5087,24 @@ RealWaitForChar(fd, msec, check_for_gpm)
     if (msec > 0 && (
 #  ifdef FEAT_XCLIPBOARD
 	    xterm_Shell != (Widget)0
-#   if defined(USE_XSMP) || defined(FEAT_MZSCHEME)
+#   if defined(USE_XSMP) || defined(FEAT_MZSCHEME) || defined(FEAT_TIMERS)
 	    ||
 #   endif
 #  endif
 #  ifdef USE_XSMP
 	    xsmp_icefd != -1
-#   ifdef FEAT_MZSCHEME
+#   if defined(FEAT_MZSCHEME) || defined(FEAT_TIMERS)
 	    ||
 #   endif
 #  endif
 #  ifdef FEAT_MZSCHEME
 	(mzthreads_allowed() && p_mzq > 0)
+#   ifdef FEAT_TIMERS
+	    ||
+#   endif
+#  endif
+#  ifdef FEAT_TIMERS
+	TRUE
 #  endif
 	    ))
 	gettimeofday(&start_tv, NULL);
@@ -5129,6 +5150,9 @@ RealWaitForChar(fd, msec, check_for_gpm)
 	    towait = (int)p_mzq;    /* don't wait longer than 'mzquantum' */
 	    mzquantum_used = TRUE;
 	}
+# endif
+# ifdef FEAT_TIMERS
+	towait = call_timeouts(msec);
 # endif
 	fds[0].fd = fd;
 	fds[0].events = POLLIN;
@@ -5257,6 +5281,9 @@ RealWaitForChar(fd, msec, check_for_gpm)
 	    mzquantum_used = TRUE;
 	}
 # endif
+# ifdef FEAT_TIMERS
+	towait = call_timeouts(msec);
+# endif
 # ifdef __EMX__
 	/* don't check for incoming chars if not in raw mode, because select()
 	 * always returns TRUE then (in some version of emx.dll) */
@@ -5367,6 +5394,10 @@ select_eintr:
 # ifdef FEAT_MZSCHEME
 	if (ret == 0 && mzquantum_used)
 	    /* loop if MzThreads must be scheduled and timeout occurred */
+	    finished = FALSE;
+# endif
+# ifdef FEAT_TIMERS
+	if (ret == 0 && msec > p_tt)
 	    finished = FALSE;
 # endif
 

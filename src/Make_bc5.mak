@@ -617,6 +617,7 @@ vimobj =  \
 	$(OBJDIR)\syntax.obj \
 	$(OBJDIR)\tag.obj \
 	$(OBJDIR)\term.obj \
+	$(OBJDIR)\timers.obj \
 	$(OBJDIR)\ui.obj \
 	$(OBJDIR)\undo.obj \
 	$(OBJDIR)\version.obj \

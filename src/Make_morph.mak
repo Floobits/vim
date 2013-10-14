@@ -65,6 +65,7 @@ SRC =	blowfish.c						\
 	syntax.c						\
 	tag.c							\
 	term.c							\
+	timers.c						\
 	ui.c							\
 	undo.c							\
 	version.c						\

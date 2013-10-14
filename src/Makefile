@@ -1468,6 +1468,7 @@ BASIC_SRC = \
 	syntax.c \
 	tag.c \
 	term.c \
+	timers.c \
 	ui.c \
 	undo.c \
 	version.c \
@@ -1557,6 +1558,7 @@ OBJ_COMMON = \
 	$(SNIFF_OBJ) \
 	objects/tag.o \
 	objects/term.o \
+	objects/timers.o \
 	objects/ui.o \
 	objects/undo.o \
 	objects/version.o \
@@ -1630,6 +1632,7 @@ PRO_AUTO = \
 	tag.pro \
 	term.pro \
 	termlib.pro \
+	timers.pro \
 	ui.pro \
 	undo.pro \
 	version.pro \
@@ -2723,6 +2726,9 @@ objects/tag.o: tag.c
 objects/term.o: term.c
 	$(CCC) -o $@ term.c
 
+objects/timers.o: timers.c
+	$(CCC) -o $@ timers.c
+
 objects/ui.o: ui.c
 	$(CCC) -o $@ ui.c
 
@@ -3004,6 +3010,9 @@ objects/term.o: term.c vim.h auto/config.h feature.h os_unix.h auto/osdef.h \
  ascii.h keymap.h term.h macros.h option.h structs.h regexp.h gui.h \
  gui_beval.h proto/gui_beval.pro ex_cmds.h proto.h globals.h farsi.h \
  arabic.h
+objects/timers.o: timers.c vim.h auto/config.h feature.h os_unix.h os_mac.h ascii.h \
+  keymap.h term.h macros.h option.h structs.h regexp.h gui.h ex_cmds.h \
+  proto.h proto/timers.pro globals.h farsi.h arabic.h auto/osdef.h
 objects/ui.o: ui.c vim.h auto/config.h feature.h os_unix.h auto/osdef.h ascii.h \
  keymap.h term.h macros.h option.h structs.h regexp.h gui.h gui_beval.h \
  proto/gui_beval.pro ex_cmds.h proto.h globals.h farsi.h arabic.h

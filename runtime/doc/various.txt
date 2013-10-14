@@ -412,6 +412,7 @@ m  *+tcl/dyn*		Tcl interface |tcl-dynamic| |/dyn|
 N  *+termresponse*	support for |t_RV| and |v:termresponse|
 N  *+textobjects*	|text-objects| selection
    *+tgetent*		non-Unix only: able to use external termcap
+   *+timers*		timer functions
 N  *+title*		Setting the window 'title' and 'icon'
 N  *+toolbar*		|gui-toolbar|
 N  *+user_commands*	User-defined commands. |user-commands|

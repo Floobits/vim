@@ -6,6 +6,7 @@ int mch_char_avail __ARGS((void));
 long_u mch_total_mem __ARGS((int special));
 void mch_delay __ARGS((long msec, int ignoreinput));
 int mch_stackcheck __ARGS((char *p));
+unsigned long long mch_monotonic_time __ARGS((void));
 void mch_startjmp __ARGS((void));
 void mch_endjmp __ARGS((void));
 void mch_didjmp __ARGS((void));

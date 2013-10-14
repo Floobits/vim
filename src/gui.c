@@ -2862,7 +2862,9 @@ gui_insert_lines(row, count)
 gui_wait_for_chars(wtime)
     long    wtime;
 {
-    int	    retval;
+    int 	retval;
+    long	i = 0;
+    long	time_to_wait;
 
 #ifdef FEAT_MENU
     /*
@@ -2887,7 +2889,19 @@ gui_wait_for_chars(wtime)
 	/* Blink when waiting for a character.	Probably only does something
 	 * for showmatch() */
 	gui_mch_start_blink();
-	retval = gui_mch_wait_for_chars(wtime);
+	while (i < wtime)
+	{
+#ifdef FEAT_TIMERS
+	    time_to_wait = call_timeouts(wtime - i);
+	    i += time_to_wait;
+	    retval = gui_mch_wait_for_chars(time_to_wait);
+#else
+	    retval = gui_mch_wait_for_chars(wtime);
+	    i += wtime;
+#endif
+	    if (retval == OK)
+		break;
+	}
 	gui_mch_stop_blink();
 	return retval;
     }
@@ -2898,18 +2912,29 @@ gui_wait_for_chars(wtime)
     gui_mch_start_blink();
 
     retval = FAIL;
+
+    while (i < p_ut) {
+#ifdef FEAT_TIMERS
+	time_to_wait = call_timeouts(p_ut - i);
+	i += time_to_wait;
+	retval = gui_mch_wait_for_chars(time_to_wait);
+#else
+	retval = gui_mch_wait_for_chars(p_ut);
+	i += p_ut;
+#endif
+	if (retval == OK)
+	    break;
+    }
+
+#ifdef FEAT_AUTOCMD
     /*
      * We may want to trigger the CursorHold event.  First wait for
      * 'updatetime' and if nothing is typed within that time put the
      * K_CURSORHOLD key in the input buffer.
      */
-    if (gui_mch_wait_for_chars(p_ut) == OK)
-	retval = OK;
-#ifdef FEAT_AUTOCMD
-    else if (trigger_cursorhold())
+    if (retval == FAIL && trigger_cursorhold())
     {
 	char_u	buf[3];
-
 	/* Put K_CURSORHOLD in the input buffer. */
 	buf[0] = CSI;
 	buf[1] = KS_EXTRA;
@@ -2919,13 +2944,6 @@ gui_wait_for_chars(wtime)
 	retval = OK;
     }
 #endif
-
-    if (retval == FAIL)
-    {
-	/* Blocking wait. */
-	before_blocking();
-	retval = gui_mch_wait_for_chars(-1L);
-    }
 
     gui_mch_stop_blink();
     return retval;
