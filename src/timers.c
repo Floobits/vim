@@ -5,7 +5,7 @@
 /*
  * Avoid recursive calls to call_timeouts
  */
-static int calling_timeouts = FALSE;
+
 
 /*
  * Return monotonic time, if available. Fall back to gettimeofday otherwise.
@@ -14,13 +14,13 @@ static int calling_timeouts = FALSE;
 get_monotonic_time(void)
 {
 	unsigned long long tm;
-#ifdef MCH_MONOTONIC_TIME
+# ifdef MCH_MONOTONIC_TIME
 	tm = mch_monotonic_time();
-#else
+# else
 	struct timeval now;
 	gettimeofday(&now, NULL);
-	tm = now.tv_sec * 1000 + now.tv_usec/1000;
-#endif
+	tm = now.tv_sec * 1000 + now.tv_usec / 1000;
+# endif
 	return tm;
 }
 
@@ -38,27 +38,27 @@ insert_timeout(to)
 
 	if (timeouts == NULL)
 	{
-		timeouts = to;
-		return;
+	timeouts = to;
+	return;
 	}
 
-	while (cur != NULL) 
+	while (cur != NULL)
 	{
-		if (cur->tm > to->tm)
+	if (cur->tm > to->tm)
+	{
+		if (prev)
 		{
-			if (prev)
-			{
-				prev->next = to;
-			}
-			else 
-			{
-				timeouts = to;
-			}
-			to->next = cur;
-			return;
+			prev->next = to;
 		}
-		prev = cur;
-		cur = cur->next;
+		else
+		{
+			timeouts = to;
+		}
+		to->next = cur;
+		return;
+	}
+	prev = cur;
+	cur = cur->next;
 	}
 	prev->next = to;
 	to->next = NULL;
@@ -79,40 +79,40 @@ call_timeouts(max_to_wait)
 
 	if (calling_timeouts)
 	{
-		return max_to_wait;
+	return towait;
 	}
 
 	calling_timeouts = TRUE;
 
 	while (timeouts != NULL && timeouts->tm < now)
 	{
-		retval = do_cmdline_cmd(timeouts->cmd);
-		tmp = timeouts;
-		timeouts = timeouts->next;
-		if (tmp->interval == -1 || retval == FAIL || did_throw || did_emsg)
-		{	
-			if (got_int) 
-			{
-				if (tmp->sourcing_lnum) 
-				{
-					EMSG(_("E881: An interval was canceled because of an interrupt"));
-					EMSG3(_("%s:%s"), tmp->sourcing_name, tmp->sourcing_lnum);
-				} 
-				else 
-				{
-					EMSG(_("E881: An interval was canceled because of an interrupt"));
-					EMSG2(_("%s"), tmp->sourcing_name);
-				}
-			}
-			free(tmp->cmd);
-			free(tmp->sourcing_name);
-			free(tmp);
-		} 
+	retval = do_cmdline_cmd(timeouts->cmd);
+	tmp = timeouts;
+	timeouts = timeouts->next;
+	if (tmp->interval == -1 || retval == FAIL || did_throw || did_emsg)
+	{
+		if (got_int)
+		{
+		if (tmp->sourcing_lnum)
+		{
+			EMSG(_("E881: An interval was canceled because of an interrupt"));
+			EMSG3(_("%s:%s"), tmp->sourcing_name, tmp->sourcing_lnum);
+		}
 		else
 		{
-			tmp->tm = now + tmp->interval;
-			insert_timeout(tmp);
+			EMSG(_("E881: An interval was canceled because of an interrupt"));
+			EMSG2(_("%s"), tmp->sourcing_name);
 		}
+		}
+		free(tmp->cmd);
+		free(tmp->sourcing_name);
+		free(tmp);
+	}
+	else
+	{
+		tmp->tm = now + tmp->interval;
+		insert_timeout(tmp);
+	}
 	}
 
 	calling_timeouts = FALSE;
@@ -120,21 +120,21 @@ call_timeouts(max_to_wait)
 	/* if there is not a timer, change towait so that it will get called */
 	if (timeouts != NULL && max_to_wait != 0)
 	{
-		now = get_monotonic_time();
-		if (now > timeouts->tm)
-			return p_tt;
+	now = get_monotonic_time();
+	if (now > timeouts->tm)
+		return p_tt;
 
-		towait = timeouts->tm - now;
+	towait = timeouts->tm - now;
 
-		/* don't wake up every 1 ms ... limit to p_tt */
-		if (towait < p_tt)
-			towait = p_tt;
+	/* don't wake up every 1 ms ... limit to p_tt */
+	if (towait < p_tt)
+		towait = p_tt;
 
-		/* don't overshoot the wait time */
-		if (max_to_wait > 0 && towait > max_to_wait)
-			towait = max_to_wait;
+	/* don't overshoot the wait time */
+	if (max_to_wait > 0 && towait > max_to_wait)
+		towait = max_to_wait;
 
-        return towait;
+		return towait;
 	}
 
 	return max_to_wait;

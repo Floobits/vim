@@ -5365,6 +5365,11 @@ select_eintr:
 	 * required. Should not be used */
 	ret = 0;
 # else
+	if (calling_timeouts)
+	{
+		unsigned long long now = get_monotonic_time();
+		printf("now: %llu", now);
+	}
 	ret = select(maxfd + 1, &rfds, NULL, &efds, tvp);
 # endif
 # ifdef EINTR
