@@ -299,3 +299,5 @@
 
 /* A Mac constant causing big problem to syntax highlighting */
 #define UNKNOWN_CREATOR '\?\?\?\?'
+
+#define MCH_MONOTONIC_TIME

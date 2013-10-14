@@ -27,7 +27,6 @@
 #include <mach/mach_time.h>
 
 
-#define MCH_MONOTONIC_TIME
 	unsigned long long
 mch_monotonic_time(void)
 {

@@ -568,3 +568,7 @@ int mch_rename __ARGS((const char *src, const char *dest));
 
 /* We have three kinds of ACL support. */
 #define HAVE_ACL (HAVE_POSIX_ACL || HAVE_SOLARIS_ACL || HAVE_AIX_ACL)
+
+#if !defined(MACOS_X_UNIX)
+# define MCH_MONOTONIC_TIME
+#endif

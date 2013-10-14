@@ -16705,6 +16705,7 @@ f_canceltimeout(argvars, rettv)
 	    else
 		timeouts = next;
 	    free(tmp->cmd);
+            free(tmp->sourcing_name);
 	    free(tmp);
 	    rettv->vval.v_number = 0;
 	    rettv->v_type = VAR_NUMBER;
