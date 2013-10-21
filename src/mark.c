@@ -1373,8 +1373,11 @@ free_jumplist(wp)
     void
 set_last_cursor(win)
     win_T	*win;
-{
-    win->w_buffer->b_last_cursor = win->w_cursor;
+{	
+	if (win->w_buffer != NULL)
+	{
+	    win->w_buffer->b_last_cursor = win->w_cursor;
+	}
 }
 
 #if defined(EXITFREE) || defined(PROTO)
