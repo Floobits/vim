@@ -1,3 +1,14 @@
+## Don't use this fork of vim. 
+
+If you have trouble using our vimplugin with regular
+vim because of leader keys you may want to use emacs with evil and evil-leader.
+We're hoping for @neovim to take off, but there is little we can do about vim in
+the meantime. Email support@floobits.com if you have questions.
+
+- Floobits.
+
+
+
 README.txt for version 7.4 of Vim: Vi IMproved.
 
 
